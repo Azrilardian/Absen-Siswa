@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!--! Bootstrap Css  -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<!--! My Css  -->
+		<link rel="stylesheet" href="css/style.css" />
+		<!--! Font Awesome -->
+		<link rel="stylesheet" href="../../Assets/fontawesome 5.13.0/css/all.css" />
+		<title>Absen Siswa</title>
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Keterangan Siswa</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="nama"><label for="nama">Nama : </label><input type="text" id="nama" class="input" /></div>
+							<div class="kelas"><label for="kelas">Kelas : </label><input type="text" id="kelas" class="input" /></div>
+							<div class="absen"><label for="jurusan">Jurusan : </label><input type="text" id="jurusan" class="input" /></div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+							<button type="button" class="btn btn-primary" id="btn-tambah">Tambah</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="left">
+				<div class="row">
+					<div class="col text-center">
+						<h1>PROGRAM ABSENSI SISWA</h1>
+					</div>
+				</div>
+				<div class="nama-kelas">
+					<button type="button" class="btn btn-primary tambah-siswa" data-toggle="modal" data-target="#exampleModal">
+						<i class="fa fa-plus"></i>
+					</button>
+				</div>
+			</div>
+			<div class="right"></div>
+		</div>
+
+		<!--! Optional JavaScript -->
+		<!--! jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/jquery.easing.1.3.js"></script>
+		<script src="js/popper.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/script.js"></script>
+	</body>
+</html>

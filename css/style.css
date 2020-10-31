@@ -1,0 +1,114 @@
+html body {
+	font-family: "Poppins", sans-serif;
+}
+
+button:focus {
+	outline: none;
+	border: none;
+}
+
+.container-fluid {
+	height: 100vh;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: whitesmoke;
+	padding: 20px;
+	display: flex;
+}
+
+.container-fluid .left {
+	width: 70%;
+	background-color: #383838;
+	padding: 25px 30px;
+}
+
+.container-fluid .left h1 {
+	color: white;
+	font-weight: 400;
+	font-size: 24px;
+	position: relative;
+	margin-bottom: 40px;
+}
+
+.container-fluid .left h1::after {
+	content: "";
+	position: absolute;
+	margin: auto;
+	bottom: -20px;
+	left: 0;
+	right: 0;
+	width: 20%;
+	height: 2px;
+	background-color: teal;
+}
+
+.container-fluid .right {
+	width: 30%;
+	background-color: #e7e7e7;
+	padding: 20px;
+	overflow: scroll;
+}
+.container-fluid .right button span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 100%;
+	display: grid;
+	place-content: center;
+	background-color: #383838;
+	border-radius: 7px;
+}
+
+.container-fluid .right button.siswa {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	border: none;
+	margin-bottom: 6px;
+	padding: 2px;
+	background-color: teal;
+	color: white;
+	letter-spacing: 1px;
+	border-radius: 7px;
+	overflow: hidden;
+}
+
+.container-fluid .nama-kelas {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+button.tambah-siswa,
+button.kelas-siswa {
+	background-color: teal;
+	width: 120px;
+	height: 120px;
+	margin: 10px;
+	border-radius: 15px;
+	font-size: 14px;
+	font-weight: 600;
+	color: whitesmoke;
+	border: none;
+	text-transform: uppercase;
+	border: none;
+	transition: all.3s;
+}
+
+button.tambahSiswa:hover,
+button.kelasSiswa:hover {
+	background-color: #027a7abb;
+}
+
+.modal .modal-body {
+	display: flex;
+	flex-direction: column;
+}
+
+.modal .modal-body label {
+	width: 20%;
+}
+
+.modal .modal-body input {
+	width: 80%;
+}
