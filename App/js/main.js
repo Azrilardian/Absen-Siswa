@@ -2,7 +2,6 @@ const main = () => {
 	//? Inisialisasi Variabel
 	const kelasContainer = document.querySelector(".nama-kelas");
 	const siswaContainer = document.querySelector(".right");
-	const tambahSiswa = document.querySelector(".tambahSiswa");
 	const nama = document.getElementById("nama");
 	const kelas = document.getElementById("kelas");
 	const jurusan = document.getElementById("jurusan");
