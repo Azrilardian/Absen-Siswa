@@ -58,7 +58,8 @@ const main = () => {
 		const cekDuplikasiNamaKelas = semuaKelas.map((e) => e.kelas).includes(kelas);
 		if (cekDuplikasiNamaKelas) {
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
-			return alert(`Berhasil menambah ${nama} pada kelas ${kelas}`);
+			closeBootstrapModal();
+			showBootstrapAlert(".alert-success", nama, kelas);
 		} else {
 			semuaKelas.push(new Kelas(kelas));
 			const BuatBtnKelas = `<button class="kelas kelas-siswa ${kelas}">${kelas}</button>`;
@@ -71,9 +72,13 @@ const main = () => {
 
 	const cekNamaSiswa = (tambahData) => {
 		const cekDuplikasiNamaSiswa = semuaSiswa.map((e) => e.nama).includes(nama.value);
-		if (nama.value == "" || kelas.value == "" || jurusan.value == "") return alert("Semua data harus diisi!");
-		else if (cekDuplikasiNamaSiswa) return alert(`Siswa dengan nama ${nama.value} sudah terdaftar!`);
-		else {
+		if (nama.value == "" || kelas.value == "" || jurusan.value == "") {
+			closeBootstrapModal();
+			showBootstrapAlert(".alert-warning");
+		} else if (cekDuplikasiNamaSiswa) {
+			closeBootstrapModal();
+			showBootstrapAlert(".alert-warning", nama.value, kelas.value);
+		} else {
 			tambahData(nama.value, kelas.value, jurusan.value);
 		}
 	};
@@ -85,6 +90,40 @@ const main = () => {
 			e.style.textTransform = "uppercase";
 		});
 	});
+
+	const closeBootstrapModal = () => {
+		const modal = document.querySelector(".modal");
+		const modalOverlay = document.querySelector(".modal-backdrop");
+		document.body.removeAttribute("class");
+		modal.classList.toggle("show");
+		modal.style.display = "none";
+		modal.setAttribute("aria-hidden", "true");
+		modal.removeAttribute("aria-modal");
+		modal.removeAttribute("role");
+		modalOverlay.remove();
+	};
+
+	const showBootstrapAlert = (selector, namaSiswa, namaKelas) => {
+		const alert = document.querySelector(selector);
+		alert.classList.add("active");
+		if (selector == ".alert-warning") {
+			// Cek apakah parameter namaSiswa dan namaKelas diisi
+			if (namaSiswa != undefined && namaKelas != undefined) {
+				alert.style.width = "500px";
+				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Sudah Terdaftar Pada Kelas ${namaKelas}</p>`;
+			} else {
+				alert.style.width = "350px";
+				alert.innerHTML = `<p>Semua Data Harus Diisi !</p>`;
+			}
+		} else if (selector == ".alert-success") {
+			// Cek apakah parameter namaSiswa dan namaKelas diisi
+			if (namaSiswa != undefined && namaKelas != undefined) {
+				alert.style.width = "550px";
+				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Berhasil Ditambah Pada Kelas ${namaKelas}</p>`;
+			}
+		}
+		setTimeout(() => alert.classList.remove("active"), 2000);
+	};
 };
 
 export default main;

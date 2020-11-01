@@ -132,6 +132,24 @@ button.kelasSiswa:hover {
 .modal .modal-footer button#btn-tambah {
 	background: var(--blue-gradient);
 }
+.alert {
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 0;
+	top: -10%;
+	display: grid;
+	place-items: center;
+	transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.alert.active {
+	top: 40px;
+}
+.alert p {
+	margin: 10px 0;
+	text-align: center;
+}
 
 /*? BREAKPOINT */
 
