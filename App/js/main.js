@@ -1,3 +1,5 @@
+import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./local-storage";
+
 const main = () => {
 	//? Inisialisasi Variabel
 	const kelasContainer = document.querySelector(".nama-kelas");
@@ -18,18 +20,21 @@ const main = () => {
 	});
 
 	// Event pada saat tiap - tiap kelas di klik
-	kelasContainer.addEventListener("click", (e) => {
-		if (e.target.classList.contains("kelas-siswa")) {
-			const namaKelas = e.target.textContent;
-			const namaSiswa = siswaPadaKelas(namaKelas);
-			siswaContainer.innerHTML = ""; // Hapus semua data
-			// Lalu tambahkan
-			namaSiswa.forEach((e, i) => {
-				const button = `<button class="siswa"><span>${++i}</span>${e}</button>`;
-				siswaContainer.insertAdjacentHTML("beforeend", button);
-			});
-		}
-	});
+	const tampilkanSiswaPadaKelas = () => {
+		kelasContainer.addEventListener("click", (e) => {
+			if (e.target.classList.contains("kelas-siswa")) {
+				const namaKelas = e.target.textContent;
+				const namaSiswa = siswaPadaKelas(namaKelas);
+				siswaContainer.innerHTML = ""; // Hapus semua data
+				// Lalu tambahkan
+				namaSiswa.forEach((e, i) => {
+					const button = `<button class="siswa"><span>${++i}</span>${e}</button>`;
+					siswaContainer.insertAdjacentHTML("beforeend", button);
+				});
+			}
+		});
+	};
+	tampilkanSiswaPadaKelas();
 
 	const siswaPadaKelas = (namaKelas) => {
 		const kelasSiswa = semuaSiswa
@@ -42,32 +47,38 @@ const main = () => {
 		return kelasSiswa;
 	};
 
+	//? Get Data Siswa
+	function Siswa(nama, kelas, jurusan) {
+		this.nama = nama;
+		this.kelas = kelas;
+		this.jurusan = jurusan;
+	}
+
+	//? Get Data Kelas
+	function Kelas(kelas) {
+		this.kelas = kelas;
+	}
+
 	const tambahDataSiswa = (nama, kelas, jurusan) => {
-		//? Get Data Siswa
-		function Siswa(nama, kelas, jurusan) {
-			this.nama = nama;
-			this.kelas = kelas;
-			this.jurusan = jurusan;
-		}
-
-		//? Get Data Kelas
-		function Kelas(kelas) {
-			this.kelas = kelas;
-		}
-
 		const cekDuplikasiNamaKelas = semuaKelas.map((e) => e.kelas).includes(kelas);
 		if (cekDuplikasiNamaKelas) {
+			// Jangan buat kelas ketika kelas sudah ada
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
+			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
 			closeBootstrapModal();
 			showBootstrapAlert(".alert-success", nama, kelas);
+			return;
 		} else {
+			// Buat kelas ketika kelas belum ada
 			semuaKelas.push(new Kelas(kelas));
+			syncWithLocalStorageKelas("ADD", kelas);
 			const BuatBtnKelas = `<button class="kelas kelas-siswa ${kelas}">${kelas}</button>`;
 			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
 		}
 
 		//? Add Data
 		semuaSiswa.push(new Siswa(nama, kelas, jurusan)); // -> Menambah Siswa untuk pertama kali
+		syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
 	};
 
 	const cekNamaSiswa = (tambahData) => {
@@ -79,6 +90,7 @@ const main = () => {
 			closeBootstrapModal();
 			showBootstrapAlert(".alert-warning", nama.value, kelas.value);
 		} else {
+			// Callback
 			tambahData(nama.value, kelas.value, jurusan.value);
 		}
 	};
@@ -110,7 +122,7 @@ const main = () => {
 			// Cek apakah parameter namaSiswa dan namaKelas diisi
 			if (namaSiswa != undefined && namaKelas != undefined) {
 				alert.style.width = "500px";
-				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Sudah Terdaftar Pada Kelas ${namaKelas}</p>`;
+				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Sudah Terdaftar</p>`;
 			} else {
 				alert.style.width = "350px";
 				alert.innerHTML = `<p>Semua Data Harus Diisi !</p>`;
@@ -119,11 +131,32 @@ const main = () => {
 			// Cek apakah parameter namaSiswa dan namaKelas diisi
 			if (namaSiswa != undefined && namaKelas != undefined) {
 				alert.style.width = "550px";
-				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Berhasil Ditambah Pada Kelas ${namaKelas}</p>`;
+				alert.innerHTML = `<p><strong>${namaSiswa.toUpperCase()}</strong> Berhasil Ditambah Pada Kelas ${namaKelas}</p>`;
 			}
 		}
 		setTimeout(() => alert.classList.remove("active"), 2000);
 	};
+
+	const dataKelasLocal = localStorage.getItem(STORAGE_KELAS);
+	const dataSiswaLocal = localStorage.getItem(STORAGE_SISWA);
+	if (dataKelasLocal) {
+		const semuaKelasLocal = JSON.parse(dataKelasLocal);
+		for (let isiKelas in semuaKelasLocal) {
+			const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
+			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+			semuaKelas.push(new Kelas(isiKelas));
+			syncWithLocalStorageKelas("ADD", isiKelas);
+		}
+	}
+	if (dataSiswaLocal) {
+		const semuaSiswaLocal = JSON.parse(dataSiswaLocal);
+		for (let isiSiswa in semuaSiswaLocal) {
+			const [, nama, kelas, jurusan] = semuaSiswaLocal[isiSiswa];
+			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
+			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
+			tampilkanSiswaPadaKelas();
+		}
+	}
 };
 
 export default main;
