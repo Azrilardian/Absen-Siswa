@@ -57,6 +57,18 @@ button:focus {
 	transition: 0.2s ease-in;
 	overflow: auto;
 }
+
+.container-fluid .right .siswa-pada-kelas {
+	background-color: white;
+	height: 45px;
+	display: grid;
+	place-content: center;
+	margin-bottom: 30px;
+	font-weight: 600;
+	border-radius: 7px;
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	text-transform: uppercase;
+}
 .container-fluid .right button span {
 	position: absolute;
 	top: 0;
@@ -109,12 +121,20 @@ button.kelas-siswa {
 	text-transform: uppercase;
 	border: none;
 	box-shadow: 1px 1px 5px #3b3b3b7c;
-	transition: 0.2s ease-in;
+	transition: 0.1s ease-in;
 }
 
-button.tambahSiswa:hover,
-button.kelasSiswa:hover {
-	background-color: #027a7abb;
+button.tambah-siswa:hover,
+button.kelas-siswa:hover {
+	transform: scale(0.98);
+}
+button.kelas-siswa:active {
+	transform: scale(0.99);
+	border: 2px solid whitesmoke;
+}
+button.kelas-siswa.active {
+	transform: scale(0.99);
+	border: 2px solid whitesmoke;
 }
 
 .modal .modal-body {

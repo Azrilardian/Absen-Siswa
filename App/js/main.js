@@ -3,7 +3,7 @@ import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalS
 const main = () => {
 	//? Inisialisasi Variabel
 	const kelasContainer = document.querySelector(".nama-kelas");
-	const siswaContainer = document.querySelector(".right");
+	const siswaContainer = document.querySelector(".right .isi-siswa");
 	const nama = document.getElementById("nama");
 	const kelas = document.getElementById("kelas");
 	const jurusan = document.getElementById("jurusan");
@@ -23,6 +23,16 @@ const main = () => {
 	const tampilkanSiswaPadaKelas = () => {
 		kelasContainer.addEventListener("click", (e) => {
 			if (e.target.classList.contains("kelas-siswa")) {
+				// Style ketika kelas di click
+				const kelasSiswa = document.querySelectorAll(".kelas-siswa");
+				kelasSiswa.forEach((e) => e.classList.remove("active"));
+				e.target.classList.add("active");
+
+				// Siswa pada kelas apa
+				const namaKelasContainer = document.querySelector(".siswa-pada-kelas");
+				namaKelasContainer.textContent = `ABSEN KELAS ${e.target.textContent}`;
+
+				// Tampilkan data siswa pada kelas
 				const namaKelas = e.target.textContent;
 				const namaSiswa = siswaPadaKelas(namaKelas);
 				siswaContainer.innerHTML = ""; // Hapus semua data
