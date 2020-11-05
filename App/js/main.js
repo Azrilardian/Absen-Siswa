@@ -38,7 +38,7 @@ const main = () => {
 				siswaContainer.innerHTML = ""; // Hapus semua data
 				// Lalu tambahkan
 				namaSiswa.forEach((e, i) => {
-					const button = `<button class="siswa"><span>${++i}</span>${e}</button>`;
+					const button = `<button class="siswa"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e}</button>`;
 					siswaContainer.insertAdjacentHTML("beforeend", button);
 				});
 			}
@@ -105,6 +105,51 @@ const main = () => {
 		}
 	};
 
+	const metodepadaSiswa = () => {
+		const container = document.querySelector(".container-fluid");
+
+		const nonActiveSiswaMethod = () => {
+			const allSpanMethod = document.querySelectorAll("span.method");
+			const allSiswa = document.querySelectorAll("button.siswa");
+			allSpanMethod.forEach((e) => e.classList.remove("active"));
+			allSiswa.forEach((e) => e.classList.remove("active"));
+		};
+
+		const statusSiswa = (target, statusSiswa) => {
+			const siswa = target.parentElement;
+			siswa.classList.toggle(statusSiswa);
+			nonActiveSiswaMethod();
+		};
+
+		container.addEventListener("click", (e) => {
+			if (e.target.classList.contains("siswa")) {
+				const siswa = e.target;
+				const spanMethod = [siswa.children[1], siswa.children[2], siswa.children[3]];
+				spanMethod.forEach((e) => e.classList.toggle("active"));
+				siswa.classList.toggle("active");
+			} else if (e.target.classList.contains("izin")) {
+				e.target.parentElement.classList.remove("siswa-sakit", "siswa-bolos"); // agar siswa tidak mempunyai status ganda
+				statusSiswa(e.target, "siswa-izin");
+			} else if (e.target.classList.contains("sakit")) {
+				e.target.parentElement.classList.remove("siswa-izin", "siswa-bolos");
+				statusSiswa(e.target, "siswa-sakit");
+			} else if (e.target.classList.contains("bolos")) {
+				e.target.parentElement.classList.remove("siswa-izin", "siswa-sakit");
+				statusSiswa(e.target, "siswa-bolos");
+			} else {
+				nonActiveSiswaMethod();
+			}
+		});
+	};
+	metodepadaSiswa();
+
+	const clearStatusSiswaEsokHari = () => {
+		const statusSiswa = document.querySelectorAll("button.siswa");
+		const jam = new Date().getHours();
+		if (jam == 24) statusSiswa.forEach((e) => e.classList.remove("siswa-sakit", "siswa-izin", "siswa-bolos"));
+	};
+	clearStatusSiswaEsokHari();
+
 	//! Otomatis memperbesar huruf pada semua inputan
 	const input = document.querySelectorAll("input");
 	input.forEach(function (e) {
@@ -147,26 +192,36 @@ const main = () => {
 		setTimeout(() => alert.classList.remove("active"), 2000);
 	};
 
-	const dataKelasLocal = localStorage.getItem(STORAGE_KELAS);
-	const dataSiswaLocal = localStorage.getItem(STORAGE_SISWA);
-	if (dataKelasLocal) {
-		const semuaKelasLocal = JSON.parse(dataKelasLocal);
-		for (let isiKelas in semuaKelasLocal) {
-			const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
-			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
-			semuaKelas.push(new Kelas(isiKelas));
-			syncWithLocalStorageKelas("ADD", isiKelas);
+	const tanggal = () => {
+		const p = document.querySelector(".date p");
+		const date = new Date();
+		p.textContent = date.toDateString();
+	};
+	tanggal();
+
+	const dataSave = () => {
+		const dataKelasLocal = localStorage.getItem(STORAGE_KELAS);
+		const dataSiswaLocal = localStorage.getItem(STORAGE_SISWA);
+		if (dataKelasLocal) {
+			const semuaKelasLocal = JSON.parse(dataKelasLocal);
+			for (let isiKelas in semuaKelasLocal) {
+				const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
+				kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+				semuaKelas.push(new Kelas(isiKelas));
+				syncWithLocalStorageKelas("ADD", isiKelas);
+			}
 		}
-	}
-	if (dataSiswaLocal) {
-		const semuaSiswaLocal = JSON.parse(dataSiswaLocal);
-		for (let isiSiswa in semuaSiswaLocal) {
-			const [, nama, kelas, jurusan] = semuaSiswaLocal[isiSiswa];
-			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
-			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
-			tampilkanSiswaPadaKelas();
+		if (dataSiswaLocal) {
+			const semuaSiswaLocal = JSON.parse(dataSiswaLocal);
+			for (let isiSiswa in semuaSiswaLocal) {
+				const [, nama, kelas, jurusan] = semuaSiswaLocal[isiSiswa];
+				semuaSiswa.push(new Siswa(nama, kelas, jurusan));
+				syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
+				tampilkanSiswaPadaKelas();
+			}
 		}
-	}
+	};
+	dataSave();
 };
 
 export default main;

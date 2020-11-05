@@ -2,6 +2,7 @@ html body {
 	font-family: "Poppins", sans-serif;
 	padding: 30px;
 	height: 100vh;
+	user-select: none;
 }
 
 :root {
@@ -24,6 +25,7 @@ button:focus {
 }
 
 .container-fluid .left {
+	position: relative;
 	width: 70%;
 	background-color: white;
 	padding: 25px 30px;
@@ -49,6 +51,19 @@ button:focus {
 	height: 2px;
 	background: var(--blue-gradient);
 }
+.container-fluid .left .date {
+	position: absolute;
+	top: 23px;
+	right: 20px;
+	width: 300px;
+	display: grid;
+	justify-content: end;
+}
+.container-fluid .left .date p {
+	margin: 5px 0;
+	font-size: 13px;
+	color: #8d8d8d;
+}
 
 .container-fluid .right {
 	width: 30%;
@@ -69,18 +84,51 @@ button:focus {
 	box-shadow: 1px 1px 5px #3b3b3b7c;
 	text-transform: uppercase;
 }
+
 .container-fluid .right button span {
 	position: absolute;
+	display: grid;
+	place-content: center;
+	color: white;
+}
+.container-fluid .right button span.absen {
 	top: 0;
 	left: 0;
 	width: 40px;
 	height: 100%;
-	display: grid;
-	place-content: center;
 	background-color: #383838;
 	font-weight: 500;
-	color: white;
 	border-radius: 7px;
+}
+
+.container-fluid .right button span.method {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 700;
+	transform: translate(-50%, 150%);
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	transition: 0.2s ease-in-out;
+	color: #222222;
+}
+.container-fluid .right button span.method.active {
+	transform: translate(-50%, 0%);
+}
+.container-fluid .right button span.method.sakit {
+	background-color: #fce566;
+	left: 50%;
+	transition-delay: 0.1s;
+}
+.container-fluid .right button span.method.izin {
+	background-color: #469e2f;
+	left: 40%;
+	transition-delay: 0.05s;
+}
+.container-fluid .right button span.method.bolos {
+	background-color: #fa4f4f;
+	left: 60%;
+	transition-delay: 0.15s;
 }
 
 .container-fluid .right button.siswa {
@@ -100,6 +148,20 @@ button:focus {
 	box-shadow: 1px 1px 5px #3b3b3b7c;
 	text-align: left;
 	padding-left: 50px;
+	overflow: hidden;
+	transition: 0.2s ease-in-out;
+}
+.container-fluid .right button.siswa.active {
+	background-color: #464646c0;
+}
+.container-fluid .right button.siswa.siswa-izin {
+	background-color: #459e2fab;
+}
+.container-fluid .right button.siswa.siswa-sakit {
+	background-color: #fce566b9;
+}
+.container-fluid .right button.siswa.siswa-bolos {
+	background-color: #fa4f4fb9;
 }
 
 .container-fluid .nama-kelas {
