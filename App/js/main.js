@@ -34,11 +34,13 @@ const main = () => {
 
 				// Tampilkan data siswa pada kelas
 				const namaKelas = e.target.textContent;
-				const namaSiswa = siswaPadaKelas(namaKelas);
+				const siswa = siswaPadaKelas(namaKelas);
 				siswaContainer.innerHTML = ""; // Hapus semua data
 				// Lalu tambahkan
-				namaSiswa.forEach((e, i) => {
-					const button = `<button class="siswa"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e}</button>`;
+				siswa.forEach((e, i) => {
+					const button = `<button class="siswa ${
+						e.kehadiran
+					}"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e.nama}</button>`;
 					siswaContainer.insertAdjacentHTML("beforeend", button);
 				});
 			}
@@ -49,19 +51,20 @@ const main = () => {
 	const siswaPadaKelas = (namaKelas) => {
 		const kelasSiswa = semuaSiswa
 			.map((e) => {
-				if (e.kelas == namaKelas) return e.nama;
+				if (e.kelas == namaKelas) return e;
 			})
 			.filter((e) => e != undefined)
 			.sort();
-
+		// siswa siswa
 		return kelasSiswa;
 	};
 
 	//? Get Data Siswa
-	function Siswa(nama, kelas, jurusan) {
+	function Siswa(nama, kelas, jurusan, kehadiran) {
 		this.nama = nama;
 		this.kelas = kelas;
 		this.jurusan = jurusan;
+		this.kehadiran = kehadiran;
 	}
 
 	//? Get Data Kelas
@@ -117,8 +120,16 @@ const main = () => {
 
 		const statusSiswa = (target, statusSiswa) => {
 			const siswa = target.parentElement;
-			siswa.classList.toggle(statusSiswa);
+			const status = siswa.classList.toggle(statusSiswa);
+			const kehadiran = status ? statusSiswa : "hadir";
+			kehadiranSiswa(target, kehadiran);
 			nonActiveSiswaMethod();
+		};
+
+		const kehadiranSiswa = (target, kehadiran) => {
+			const ketSiswaDipilih = semuaSiswa.filter((siswa) => siswa.nama == target.parentElement.lastChild.textContent);
+			const { nama, kelas, jurusan } = ketSiswaDipilih[0];
+			syncWithLocalStorageSiswa("UPDATE", nama, kelas, jurusan, kehadiran);
 		};
 
 		container.addEventListener("click", (e) => {
@@ -147,6 +158,7 @@ const main = () => {
 		const statusSiswa = document.querySelectorAll("button.siswa");
 		const jam = new Date().getHours();
 		if (jam == 24) statusSiswa.forEach((e) => e.classList.remove("siswa-sakit", "siswa-izin", "siswa-bolos"));
+		semuaSiswa.forEach((e) => (e.kehadiran = "hadir"));
 	};
 	clearStatusSiswaEsokHari();
 
@@ -199,29 +211,28 @@ const main = () => {
 	};
 	tanggal();
 
-	const dataSave = () => {
-		const dataKelasLocal = localStorage.getItem(STORAGE_KELAS);
-		const dataSiswaLocal = localStorage.getItem(STORAGE_SISWA);
-		if (dataKelasLocal) {
-			const semuaKelasLocal = JSON.parse(dataKelasLocal);
-			for (let isiKelas in semuaKelasLocal) {
-				const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
-				kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
-				semuaKelas.push(new Kelas(isiKelas));
-				syncWithLocalStorageKelas("ADD", isiKelas);
-			}
+	const dataKelasLocal = localStorage.getItem(STORAGE_KELAS);
+	const dataSiswaLocal = localStorage.getItem(STORAGE_SISWA);
+
+	if (dataKelasLocal) {
+		const semuaKelasLocal = JSON.parse(dataKelasLocal);
+		for (let isiKelas in semuaKelasLocal) {
+			const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
+			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+			semuaKelas.push(new Kelas(isiKelas));
+			syncWithLocalStorageKelas("ADD", isiKelas);
 		}
-		if (dataSiswaLocal) {
-			const semuaSiswaLocal = JSON.parse(dataSiswaLocal);
-			for (let isiSiswa in semuaSiswaLocal) {
-				const [, nama, kelas, jurusan] = semuaSiswaLocal[isiSiswa];
-				semuaSiswa.push(new Siswa(nama, kelas, jurusan));
-				syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
-				tampilkanSiswaPadaKelas();
-			}
+	}
+
+	if (dataSiswaLocal) {
+		const semuaSiswaLocal = JSON.parse(dataSiswaLocal);
+		for (let isiSiswa in semuaSiswaLocal) {
+			// Destructuring value
+			const [nama, kelas, jurusan, kehadiran] = semuaSiswaLocal[isiSiswa];
+			semuaSiswa.push(new Siswa(nama, kelas, jurusan, kehadiran));
+			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan, kehadiran);
 		}
-	};
-	dataSave();
+	}
 };
 
 export default main;

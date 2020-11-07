@@ -6,7 +6,7 @@ let semuaSiswa = {};
 const syncWithLocalStorageKelas = (status, kelas) => {
 	switch (status) {
 		case "ADD":
-			semuaKelas[kelas] = [status, kelas];
+			semuaKelas[kelas] = [kelas];
 			break;
 		default:
 			break;
@@ -15,10 +15,11 @@ const syncWithLocalStorageKelas = (status, kelas) => {
 	return;
 };
 
-const syncWithLocalStorageSiswa = (status, nama, kelas, jurusan) => {
+const syncWithLocalStorageSiswa = (status, nama, kelas, jurusan, kehadiran = "hadir") => {
 	switch (status) {
 		case "ADD":
-			semuaSiswa[nama] = [status, nama, kelas, jurusan];
+		case "UPDATE":
+			semuaSiswa[nama] = [nama, kelas, jurusan, kehadiran];
 			break;
 		default:
 			break;
