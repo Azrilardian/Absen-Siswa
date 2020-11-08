@@ -17,14 +17,14 @@
 }
 
 .onDarkMode .right button.siswa.active {
-	background-color: #010a13ef !important;
+	background-color: #162636ef !important;
 }
 
 .onDarkMode button span.absen {
 	background-color: #192c3b !important;
 }
 .onDarkMode button.siswa {
-	background-color: #0b1d27 !important;
+	background-color: #0b1d27;
 	color: white;
 }
 
