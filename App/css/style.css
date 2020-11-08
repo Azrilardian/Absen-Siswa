@@ -1,3 +1,7 @@
+@import "./left.css";
+@import "./right.css";
+@import "./bootstrap-style.css";
+
 html body {
 	font-family: "Poppins", sans-serif;
 	padding: 30px;
@@ -8,11 +12,19 @@ html body {
 :root {
 	--default-black-color: #222222;
 	--blue-gradient: linear-gradient(to bottom right, #42abf1, #0a5ebe);
+	--blue-gradient-reverse: linear-gradient(to right, #2097e6, #42abf1);
 }
 
 button:focus {
 	outline: none;
 	border: none;
+}
+input {
+	border: 1px solid #858585;
+}
+input:focus {
+	outline: none;
+	border: 1px solid #363636;
 }
 
 .container-fluid {
@@ -20,157 +32,11 @@ button:focus {
 	display: flex;
 	box-shadow: 3px 3px 15px #cccccc;
 	border-radius: 5px;
-	padding: 0;
 	transition: 0.2s ease-in;
-}
-
-.container-fluid .left {
-	position: relative;
-	width: 70%;
-	background-color: white;
-	padding: 25px 30px;
-	transition: 0.2s ease-in;
-}
-
-.container-fluid .left h1 {
-	color: var(--default-black-color);
-	font-weight: 600;
-	font-size: 24px;
-	position: relative;
-	margin-bottom: 40px;
-}
-
-.container-fluid .left h1::after {
-	content: "";
-	position: absolute;
-	margin: auto;
-	bottom: -20px;
-	left: 0;
-	right: 0;
-	width: 20%;
-	height: 2px;
-	background: var(--blue-gradient);
-}
-.container-fluid .left .date {
-	position: absolute;
-	top: 23px;
-	right: 20px;
-	width: 300px;
-	display: grid;
-	justify-content: end;
-}
-.container-fluid .left .date p {
-	margin: 5px 0;
-	font-size: 13px;
-	color: #8d8d8d;
-}
-
-.container-fluid .right {
-	width: 30%;
-	background: var(--blue-gradient);
-	padding: 20px;
-	transition: 0.2s ease-in;
-	overflow: auto;
-}
-
-.container-fluid .right .siswa-pada-kelas {
-	background-color: white;
-	height: 45px;
-	display: grid;
-	place-content: center;
-	margin-bottom: 30px;
-	font-weight: 600;
-	border-radius: 7px;
-	box-shadow: 1px 1px 5px #3b3b3b7c;
-	text-transform: uppercase;
-}
-
-.container-fluid .right button span {
-	position: absolute;
-	display: grid;
-	place-content: center;
-	color: white;
-}
-.container-fluid .right button span.absen {
-	top: 0;
-	left: 0;
-	width: 40px;
-	height: 100%;
-	background-color: #383838;
-	font-weight: 500;
-	border-radius: 7px;
-}
-
-.container-fluid .right button span.method {
-	width: 25px;
-	height: 25px;
-	border-radius: 50%;
-	font-size: 13px;
-	font-weight: 700;
-	transform: translate(-50%, 150%);
-	box-shadow: 1px 1px 5px #3b3b3b7c;
-	transition: 0.2s ease-in-out;
-	color: #222222;
-}
-.container-fluid .right button span.method.active {
-	transform: translate(-50%, 0%);
-}
-.container-fluid .right button span.method.sakit {
-	background-color: #fce566;
-	left: 50%;
-	transition-delay: 0.1s;
-}
-.container-fluid .right button span.method.izin {
-	background-color: #469e2f;
-	left: 40%;
-	transition-delay: 0.05s;
-}
-.container-fluid .right button span.method.bolos {
-	background-color: #fa4f4f;
-	left: 60%;
-	transition-delay: 0.15s;
-}
-
-.container-fluid .right button.siswa {
-	position: relative;
-	width: 100%;
-	height: 40px;
-	border: none;
-	margin-bottom: 6px;
-	padding: 2px;
-	font-weight: 500;
-	background-color: white;
-	color: var(--default-black-color);
-	letter-spacing: 1px;
-	border-radius: 7px;
 	overflow: hidden;
-	text-transform: uppercase;
-	box-shadow: 1px 1px 5px #3b3b3b7c;
-	text-align: left;
-	padding-left: 50px;
-	overflow: hidden;
-	transition: 0.2s ease-in-out;
-}
-.container-fluid .right button.siswa.active {
-	background-color: #464646c0;
-}
-.container-fluid .right button.siswa.siswa-izin {
-	background-color: #459e2fab;
-}
-.container-fluid .right button.siswa.siswa-sakit {
-	background-color: #fce566b9;
-}
-.container-fluid .right button.siswa.siswa-bolos {
-	background-color: #fa4f4fb9;
 }
 
-.container-fluid .nama-kelas {
-	display: flex;
-	flex-wrap: wrap;
-}
-
-button.tambah-siswa,
-button.kelas-siswa {
+.blue-btn {
 	background: var(--blue-gradient);
 	width: 120px;
 	height: 120px;
@@ -186,8 +52,7 @@ button.kelas-siswa {
 	transition: 0.1s ease-in;
 }
 
-button.tambah-siswa:hover,
-button.kelas-siswa:hover {
+.blue-btn:hover {
 	transform: scale(0.98);
 }
 button.kelas-siswa:active {
@@ -199,21 +64,6 @@ button.kelas-siswa.active {
 	border: 2px solid whitesmoke;
 }
 
-.modal .modal-body {
-	display: flex;
-	flex-direction: column;
-}
-
-.modal .modal-body label {
-	width: 20%;
-}
-
-.modal .modal-body input {
-	width: 80%;
-}
-.modal .modal-footer button#btn-tambah {
-	background: var(--blue-gradient);
-}
 .alert {
 	position: absolute;
 	top: 20px;
@@ -235,27 +85,39 @@ button.kelas-siswa.active {
 
 /*? BREAKPOINT */
 
-/*? 733PX */
 @media screen and (max-width: 1100px) {
-	.container-fluid .right {
-		width: 40%;
+	.right {
+		width: 40% !important;
+	}
+	.left .top-section h1 {
+		font-size: 18px;
 	}
 }
 @media screen and (max-width: 897px) {
-	button.tambah-siswa,
-	button.kelas-siswa {
+	.left .top-section {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"judul-program judul-program"
+			"ket-guru tanggal";
+	}
+	.left .col:nth-child(2) {
+		grid-area: judul-program;
+		margin-bottom: 10px;
+	}
+
+	.blue-btn {
 		width: 100px;
 		height: 100px;
 		margin: 8px;
 	}
-	.container-fluid .right {
-		width: 50%;
+	.right {
+		width: 50% !important;
 	}
-	.container-fluid .right button span {
+	.right button span {
 		font-size: 14px;
 	}
 
-	.container-fluid .right button.siswa {
+	.right button.siswa {
 		font-size: 14px;
 	}
 }
@@ -263,18 +125,26 @@ button.kelas-siswa.active {
 	.container-fluid {
 		flex-direction: column;
 	}
-	.container-fluid .left,
-	.container-fluid .right {
-		width: 100%;
+	.left,
+	.right {
+		width: 100% !important;
 	}
-	.container-fluid .right {
+	.right {
 		height: 100%;
 	}
-	.container-fluid .right button span {
+	.right button span {
 		font-size: 16px;
 	}
 
-	.container-fluid .right button.siswa {
+	.right button.siswa {
 		font-size: 16px;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.left .ket-guru p {
+		font-size: 13px;
+		display: none;
+		visibility: hidden;
 	}
 }

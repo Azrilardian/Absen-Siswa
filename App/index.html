@@ -8,33 +8,43 @@
 	</head>
 
 	<body>
-		<div class="container-fluid">
-			<div class="left">
-				<div class="row">
+		<div class="container-fluid p-0">
+			<section class="left">
+				<div class="row top-section p-3 m-0 text-white">
+					<div class="col ket-guru d-flex align-items-center">
+						<img src="../App/img/chandrika.jpg" alt="foto-guru" />
+						<div class="ket">
+							<p class="m-0">Guru BK</p>
+							<p class="m-0">Sman 3 Mataram</p>
+						</div>
+					</div>
 					<div class="col text-center">
-						<h1>PROGRAM ABSENSI SISWA</h1>
+						<h1 class="m-0">ABSENSI SISWA</h1>
+						<p class="m-0">Sman 3 Mataram</p>
 					</div>
-					<div class="col date">
-						<p>Tanggal</p>
+					<div class="col text-right">
+						<p class="date m-0"></p>
 					</div>
 				</div>
-				<div class="nama-kelas">
-					<button type="button" class="btn btn-primary tambah-siswa" data-toggle="modal" data-target="#exampleModal">
-						<i class="fa fa-plus"></i>
-					</button>
+				<div class="row main-section mx-2 my-4">
+					<div class="col d-flex flex-wrap nama-kelas">
+						<button type="button" class="btn blue-btn tambah-siswa" data-toggle="modal" data-target="#exampleModal">
+							<i class="fa fa-plus"></i>
+						</button>
+					</div>
 				</div>
-			</div>
-			<div class="right">
+			</section>
+			<section class="right">
 				<div class="siswa-pada-kelas"></div>
 				<div class="isi-siswa"></div>
-			</div>
+			</section>
 		</div>
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Keterangan Siswa</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<h6 class="modal-title text-white" id="exampleModalLabel">Keterangan Siswa</h6>
+						<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>

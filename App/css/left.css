@@ -1,0 +1,48 @@
+.left {
+	position: relative;
+	width: 70%;
+	background-color: white;
+	transition: 0.2s ease-in;
+	display: flex;
+	flex-direction: column;
+}
+
+.left .top-section {
+	display: grid !important;
+	place-items: center;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-areas: "ket-guru judul-program tanggal";
+	width: 100%;
+	background: var(--blue-gradient-reverse);
+}
+
+.left .ket-guru {
+	grid-area: ket-guru;
+}
+.left .col:nth-child(2) {
+	grid-area: judul-program;
+}
+.left .col:nth-child(3) {
+	grid-area: tanggal;
+}
+
+.left .ket-guru img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 10px;
+	filter: drop-shadow(1px 1px 5px #7070707c);
+}
+
+.left .ket-guru p {
+	font-size: 13px;
+}
+
+.left .top-section p.date {
+	font-size: 13px;
+}
+
+.left .top-section h1 {
+	font-weight: 600;
+	font-size: 24px;
+}

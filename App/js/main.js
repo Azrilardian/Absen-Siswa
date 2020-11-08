@@ -22,25 +22,25 @@ const main = () => {
 	// Event pada saat tiap - tiap kelas di klik
 	const tampilkanSiswaPadaKelas = () => {
 		kelasContainer.addEventListener("click", (e) => {
-			if (e.target.classList.contains("kelas-siswa")) {
+			const target = e.target;
+			if (target.classList.contains("kelas-siswa")) {
 				// Style ketika kelas di click
 				const kelasSiswa = document.querySelectorAll(".kelas-siswa");
 				kelasSiswa.forEach((e) => e.classList.remove("active"));
-				e.target.classList.add("active");
+				target.classList.add("active");
 
 				// Siswa pada kelas apa
 				const namaKelasContainer = document.querySelector(".siswa-pada-kelas");
-				namaKelasContainer.textContent = `ABSEN KELAS ${e.target.textContent}`;
+				namaKelasContainer.textContent = `ABSEN KELAS ${target.textContent}`;
 
 				// Tampilkan data siswa pada kelas
-				const namaKelas = e.target.textContent;
+				const namaKelas = target.textContent;
 				const siswa = siswaPadaKelas(namaKelas);
 				siswaContainer.innerHTML = ""; // Hapus semua data
 				// Lalu tambahkan
 				siswa.forEach((e, i) => {
-					const button = `<button class="siswa ${
-						e.kehadiran
-					}"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e.nama}</button>`;
+					const button = `
+					<button class="siswa ${e.kehadiran}"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e.nama}</button>`;
 					siswaContainer.insertAdjacentHTML("beforeend", button);
 				});
 			}
@@ -48,18 +48,9 @@ const main = () => {
 	};
 	tampilkanSiswaPadaKelas();
 
-	const siswaPadaKelas = (namaKelas) => {
-		const kelasSiswa = semuaSiswa
-			.map((e) => {
-				if (e.kelas == namaKelas) return e;
-			})
-			.filter((e) => e != undefined)
-			.sort();
-		// siswa siswa
-		return kelasSiswa;
-	};
+	const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
 
-	//? Get Data Siswa
+	//? Ambil Data Siswa
 	function Siswa(nama, kelas, jurusan, kehadiran) {
 		this.nama = nama;
 		this.kelas = kelas;
@@ -67,13 +58,13 @@ const main = () => {
 		this.kehadiran = kehadiran;
 	}
 
-	//? Get Data Kelas
+	//? Ambil Data Kelas
 	function Kelas(kelas) {
 		this.kelas = kelas;
 	}
 
 	const tambahDataSiswa = (nama, kelas, jurusan) => {
-		const cekDuplikasiNamaKelas = semuaKelas.map((e) => e.kelas).includes(kelas);
+		const cekDuplikasiNamaKelas = semuaKelas.find((e) => e.kelas == kelas);
 		if (cekDuplikasiNamaKelas) {
 			// Jangan buat kelas ketika kelas sudah ada
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
@@ -85,6 +76,7 @@ const main = () => {
 			// Buat kelas ketika kelas belum ada
 			semuaKelas.push(new Kelas(kelas));
 			syncWithLocalStorageKelas("ADD", kelas);
+			closeBootstrapModal();
 			const BuatBtnKelas = `<button class="kelas kelas-siswa ${kelas}">${kelas}</button>`;
 			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
 		}
@@ -95,7 +87,7 @@ const main = () => {
 	};
 
 	const cekNamaSiswa = (tambahData) => {
-		const cekDuplikasiNamaSiswa = semuaSiswa.map((e) => e.nama).includes(nama.value);
+		const cekDuplikasiNamaSiswa = semuaSiswa.find((e) => e.nama == nama.value);
 		if (nama.value == "" || kelas.value == "" || jurusan.value == "") {
 			closeBootstrapModal();
 			showBootstrapAlert(".alert-warning");
@@ -127,16 +119,19 @@ const main = () => {
 		};
 
 		const kehadiranSiswa = (target, kehadiran) => {
-			const ketSiswaDipilih = semuaSiswa.filter((siswa) => siswa.nama == target.parentElement.lastChild.textContent);
-			const { nama, kelas, jurusan } = ketSiswaDipilih[0];
+			const namaSiswa = target.parentElement.lastChild.textContent;
+			const ketSiswaDipilih = semuaSiswa.find((siswa) => siswa.nama == namaSiswa);
+			// Destructuring siswa apa yang di pilih
+			const { nama, kelas, jurusan } = ketSiswaDipilih;
 			syncWithLocalStorageSiswa("UPDATE", nama, kelas, jurusan, kehadiran);
 		};
 
 		container.addEventListener("click", (e) => {
 			if (e.target.classList.contains("siswa")) {
 				const siswa = e.target;
+				// munculkan semua metode pada siswa
 				const spanMethod = [siswa.children[1], siswa.children[2], siswa.children[3]];
-				spanMethod.forEach((e) => e.classList.toggle("active"));
+				spanMethod.map((e) => e.classList.toggle("active"));
 				siswa.classList.toggle("active");
 			} else if (e.target.classList.contains("izin")) {
 				e.target.parentElement.classList.remove("siswa-sakit", "siswa-bolos"); // agar siswa tidak mempunyai status ganda
@@ -155,10 +150,10 @@ const main = () => {
 	metodepadaSiswa();
 
 	const clearStatusSiswaEsokHari = () => {
-		const statusSiswa = document.querySelectorAll("button.siswa");
+		const siswa = document.querySelectorAll("button.siswa");
 		const jam = new Date().getHours();
-		if (jam == 24) statusSiswa.forEach((e) => e.classList.remove("siswa-sakit", "siswa-izin", "siswa-bolos"));
-		semuaSiswa.forEach((e) => (e.kehadiran = "hadir"));
+		if (jam == 24) siswa.forEach((e) => e.classList.remove("siswa-sakit", "siswa-izin", "siswa-bolos"));
+		semuaSiswa.map((e) => (e.kehadiran = "hadir"));
 	};
 	clearStatusSiswaEsokHari();
 
@@ -189,7 +184,7 @@ const main = () => {
 			// Cek apakah parameter namaSiswa dan namaKelas diisi
 			if (namaSiswa != undefined && namaKelas != undefined) {
 				alert.style.width = "500px";
-				alert.innerHTML = `<p><strong>${namaSiswa}</strong> Sudah Terdaftar</p>`;
+				alert.innerHTML = `<p><strong>${namaSiswa.toUpperCase()}</strong> Sudah Terdaftar</p>`;
 			} else {
 				alert.style.width = "350px";
 				alert.innerHTML = `<p>Semua Data Harus Diisi !</p>`;
@@ -205,7 +200,7 @@ const main = () => {
 	};
 
 	const tanggal = () => {
-		const p = document.querySelector(".date p");
+		const p = document.querySelector("p.date");
 		const date = new Date();
 		p.textContent = date.toDateString();
 	};
@@ -217,7 +212,7 @@ const main = () => {
 	if (dataKelasLocal) {
 		const semuaKelasLocal = JSON.parse(dataKelasLocal);
 		for (let isiKelas in semuaKelasLocal) {
-			const BuatBtnKelas = `<button class="kelas kelas-siswa ${isiKelas}">${isiKelas}</button>`;
+			const BuatBtnKelas = `<button class="kelas kelas-siswa blue-btn ${isiKelas}">${isiKelas}</button>`;
 			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
 			semuaKelas.push(new Kelas(isiKelas));
 			syncWithLocalStorageKelas("ADD", isiKelas);
