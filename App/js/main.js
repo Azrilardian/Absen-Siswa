@@ -85,7 +85,7 @@ const main = () => {
 			semuaKelas.push(new Kelas(kelas));
 			syncWithLocalStorageKelas("ADD", kelas);
 			closeBootstrapModal();
-			const BuatBtnKelas = `<button class="kelas kelas-siswa ${kelas}">${kelas}</button>`;
+			const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${kelas}">${kelas}</button>`;
 			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
 		}
 

@@ -155,4 +155,10 @@ button.kelas-siswa.active {
 		display: none;
 		visibility: hidden;
 	}
+	.alert-warning {
+		width: 400px !important;
+	}
+	.alert-success {
+		width: 450px !important;
+	}
 }
