@@ -1,4 +1,5 @@
 import sideBarActivation from "./sidebar";
+import darkMode from "./darkmode";
 import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./local-storage";
 
 const main = () => {
@@ -14,6 +15,9 @@ const main = () => {
 
 	// SideBar
 	sideBarActivation();
+
+	// Darkmode
+	darkMode("false");
 
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {

@@ -1,5 +1,6 @@
 @import "./left.css";
 @import "./right.css";
+@import "./darkmode.css";
 @import "./bootstrap-style.css";
 
 html body {
@@ -11,6 +12,7 @@ html body {
 
 :root {
 	--default-black-color: #222222;
+	--default-blue-color: #0a5ebe;
 	--blue-gradient: linear-gradient(to bottom right, #42abf1, #0a5ebe);
 	--blue-gradient-reverse: linear-gradient(to right, #2097e6, #42abf1);
 }

@@ -16,6 +16,7 @@
 	border-radius: 7px;
 	box-shadow: 1px 1px 5px #3b3b3b7c;
 	text-transform: uppercase;
+	transition: 0.2s ease-in-out;
 }
 
 .right button span {
@@ -85,7 +86,7 @@
 	transition: 0.2s ease-in-out;
 }
 .right button.siswa.active {
-	background-color: #464646c0;
+	background-color: #464646c0 !important;
 }
 .right button.siswa.siswa-izin {
 	background-color: #459e2fab;

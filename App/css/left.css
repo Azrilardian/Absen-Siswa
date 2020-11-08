@@ -53,6 +53,9 @@
 	padding: 3px;
 	cursor: pointer;
 }
+.side-bar ul li a {
+	color: white;
+}
 
 .burger {
 	display: flex;
