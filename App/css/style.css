@@ -86,14 +86,20 @@ button.kelas-siswa.active {
 /*? BREAKPOINT */
 
 @media screen and (max-width: 1100px) {
-	.right {
-		width: 40% !important;
+	.side-bar {
+		width: 45%;
 	}
 	.left .top-section h1 {
 		font-size: 18px;
 	}
+	.right {
+		width: 40% !important;
+	}
 }
 @media screen and (max-width: 897px) {
+	.side-bar {
+		width: 55%;
+	}
 	.left .top-section {
 		grid-template-columns: 1fr;
 		grid-template-areas:

@@ -1,3 +1,4 @@
+import sideBarActivation from "./sidebar";
 import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./local-storage";
 
 const main = () => {
@@ -10,6 +11,9 @@ const main = () => {
 	const btnTambah = document.querySelector("#btn-tambah");
 	const semuaSiswa = [];
 	const semuaKelas = [];
+
+	// SideBar
+	sideBarActivation();
 
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {
