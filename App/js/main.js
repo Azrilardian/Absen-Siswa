@@ -1,6 +1,6 @@
 import sideBarActivation from "./sidebar";
 import darkMode from "./darkmode";
-import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./local-storage";
+import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./saveDataSiswa";
 
 const main = () => {
 	//? Inisialisasi Variabel
@@ -17,7 +17,7 @@ const main = () => {
 	sideBarActivation();
 
 	// Darkmode
-	darkMode("false");
+	darkMode();
 
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {
@@ -85,8 +85,16 @@ const main = () => {
 			semuaKelas.push(new Kelas(kelas));
 			syncWithLocalStorageKelas("ADD", kelas);
 			closeBootstrapModal();
-			const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${kelas}">${kelas}</button>`;
-			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+
+			// Hapus semua kelas sebelum ditambah
+			const kelasSiswa = document.querySelectorAll(".kelas-siswa");
+			kelasSiswa.forEach((e) => e.remove());
+
+			// const urutKelas = semuaKelas.map((e) => e.kelas);
+			semuaKelas.map((e) => {
+				const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e.kelas}">${e.kelas}</button>`;
+				kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+			});
 		}
 
 		//? Add Data
@@ -157,14 +165,6 @@ const main = () => {
 	};
 	metodepadaSiswa();
 
-	const clearStatusSiswaEsokHari = () => {
-		const siswa = document.querySelectorAll("button.siswa");
-		const jam = new Date().getHours();
-		if (jam == 24) siswa.forEach((e) => e.classList.remove("siswa-sakit", "siswa-izin", "siswa-bolos"));
-		semuaSiswa.map((e) => (e.kehadiran = "hadir"));
-	};
-	clearStatusSiswaEsokHari();
-
 	//! Otomatis memperbesar huruf pada semua inputan
 	const input = document.querySelectorAll("input");
 	input.forEach(function (e) {
@@ -205,6 +205,7 @@ const main = () => {
 			}
 		}
 		setTimeout(() => alert.classList.remove("active"), 2000);
+		setTimeout(() => (alert.innerHTML = ""), 3500);
 	};
 
 	const tanggal = () => {
@@ -235,6 +236,10 @@ const main = () => {
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan, kehadiran));
 			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan, kehadiran);
 		}
+
+		// Auto hapus data kehadiran siswa setiap hari
+		const jam = new Date().getHours();
+		if (jam == 24) semuaSiswa.map((e) => (e.kehadiran = "hadir"));
 	}
 };
 
