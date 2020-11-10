@@ -27,5 +27,9 @@ module.exports = {
 			template: "./App/index.html",
 			filename: "index.html",
 		}),
+		new htmlWebpackPlugin({
+			template: "./App/login.html",
+			filename: "login.html",
+		}),
 	],
 };

@@ -4,5 +4,7 @@ require("bootstrap");
 import "popper.js";
 import "./css/bootstrap.min.css";
 import "./css/style.css";
+import "./css/login.css";
 import main from "./js/main";
+import "./js/login";
 document.addEventListener("DOMContentLoaded", main);
