@@ -29,6 +29,16 @@ const main = () => {
 
 	// Event pada saat tiap - tiap kelas di klik
 	const tampilkanSiswaPadaKelas = () => {
+		const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
+		const btnSiswa = (e, i) => {
+			return `<button class="siswa ${e.kehadiran}">
+						<span class="absen">${++i}</span>
+						<span class="sakit method">S</span>
+						<span class="izin method">I</span>
+						<span class="bolos method">B</span>${e.nama}
+					</button>`;
+		};
+
 		kelasContainer.addEventListener("click", (e) => {
 			const target = e.target;
 			if (target.classList.contains("kelas-siswa")) {
@@ -44,19 +54,22 @@ const main = () => {
 				// Tampilkan data siswa pada kelas
 				const namaKelas = target.textContent;
 				const siswa = siswaPadaKelas(namaKelas);
+				const siswaSort = siswa.sort((a, b) => {
+					const x = a.nama;
+					const y = b.nama;
+					return x < y ? -1 : x > y ? 1 : 0;
+				});
+
 				siswaContainer.innerHTML = ""; // Hapus semua data
 				// Lalu tambahkan
-				siswa.forEach((e, i) => {
-					const button = `
-					<button class="siswa ${e.kehadiran}"><span class="absen">${++i}</span><span class="sakit method">S</span><span class="izin method">I</span><span class="bolos method">B</span>${e.nama}</button>`;
+				siswaSort.forEach((e, i) => {
+					const button = btnSiswa(e, i);
 					siswaContainer.insertAdjacentHTML("beforeend", button);
 				});
 			}
 		});
 	};
 	tampilkanSiswaPadaKelas();
-
-	const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
 
 	//? Ambil Data Siswa
 	function Siswa(nama, kelas, jurusan, kehadiran) {
@@ -90,9 +103,10 @@ const main = () => {
 			const kelasSiswa = document.querySelectorAll(".kelas-siswa");
 			kelasSiswa.forEach((e) => e.remove());
 
-			// const urutKelas = semuaKelas.map((e) => e.kelas);
-			semuaKelas.map((e) => {
-				const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e.kelas}">${e.kelas}</button>`;
+			const kelasSort = semuaKelas.map((e) => e.kelas).sort();
+
+			kelasSort.map((e) => {
+				const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e}">${e}</button>`;
 				kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
 			});
 		}
@@ -220,12 +234,18 @@ const main = () => {
 
 	if (dataKelasLocal) {
 		const semuaKelasLocal = JSON.parse(dataKelasLocal);
+		const semuaKelasLocalArray = [];
+		let sortKelas = [];
 		for (let isiKelas in semuaKelasLocal) {
-			const BuatBtnKelas = `<button class="kelas kelas-siswa blue-btn ${isiKelas}">${isiKelas}</button>`;
-			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
-			semuaKelas.push(new Kelas(isiKelas));
-			syncWithLocalStorageKelas("ADD", isiKelas);
+			semuaKelasLocalArray.push(isiKelas);
+			sortKelas = semuaKelasLocalArray.sort();
 		}
+		sortKelas.map((kelas) => {
+			const BuatBtnKelas = `<button class="kelas kelas-siswa blue-btn ${kelas}">${kelas}</button>`;
+			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+			semuaKelas.push(new Kelas(kelas));
+			syncWithLocalStorageKelas("ADD", kelas);
+		});
 	}
 
 	if (dataSiswaLocal) {

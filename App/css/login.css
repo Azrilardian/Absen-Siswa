@@ -21,9 +21,30 @@ body,
 }
 
 body {
+	position: relative;
 	background-color: rgb(240, 240, 240);
 	height: 100vh;
 	font-family: "Poppins", sans-serif;
+}
+
+.wave {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	z-index: -99;
+}
+
+#waves-top {
+	bottom: unset;
+	top: 0;
+	height: 20%;
+}
+
+#waves-bottom {
+	top: unset;
+	bottom: 0;
+	height: 40%;
+	transform: rotate(180deg);
 }
 
 .login-section {
