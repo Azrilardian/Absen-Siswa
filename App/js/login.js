@@ -27,15 +27,30 @@ const User = function (nama, password) {
 	this.nama = nama;
 	this.password = password;
 };
-let sandhikaGlih = new User("Sandhika Galih", "wpunpas2020");
+
+User.prototype.push = function () {
+	return dataLogin.push(this);
+};
+let sandhikaGlih = new User("Sandhika Galih", "wpunpas2020").push();
+let azrilArdian = new User("Azril ardian", "Luckyman05").push();
+
+const cekUsername = (nama) => {
+	const allUserName = dataLogin.find((e) => e.nama == nama);
+	return allUserName;
+};
+
+const cekPassword = (password) => {
+	const allPassword = dataLogin.find((e) => e.password == password);
+	return allPassword;
+};
 
 let error = {
-	uK: `<i class="fas fa-exclamation-circle"></i>Tidak dapat login. Username Kosong.`,
-	pK: `<i class="fas fa-exclamation-circle"></i>Tidak dapat login. Password Kosong.`,
-	upK: `<i class="fas fa-exclamation-circle"></i>Tidak dapat login. Username dan Password Kosong.`,
-	utt: `<i class="fas fa-exclamation-circle"></i>Tidak dapat login. Anda bukan guru Sman 3 Mataram`,
-	ptt: `<i class="fas fa-exclamation-circle"></i>Tidadk dapat login. Password tidak terdaftar`,
-	uptt: `<i class="fas fa-exclamation-circle"></i>Tidak dapat login. Guru tidak terdaftar.`,
+	uK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Username Kosong.`,
+	pK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Password Kosong.`,
+	upK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Username dan Password Kosong.`,
+	utt: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Anda bukan guru Sman 3 Mataram`,
+	ptt: `<i class="fa fa-exclamation-circle"></i>Tidadk dapat login. Password tidak terdaftar`,
+	uptt: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Guru tidak terdaftar.`,
 };
 
 //? Form Validation
@@ -49,13 +64,13 @@ button.addEventListener("click", function () {
 			alert.innerHTML = error.upK;
 		}
 	} else if (username.value != "" || password.value != "") {
-		if (username.value != sandhikaGlih.nama && password.value != sandhikaGlih.password) {
+		if (cekUsername(username.value) == undefined && cekPassword(password.value) == undefined) {
 			alert.innerHTML = error.uptt;
-		} else if (username.value != sandhikaGlih.nama) {
+		} else if (cekUsername(username.value) == undefined) {
 			alert.innerHTML = error.utt;
-		} else if (password.value != sandhikaGlih.password) {
+		} else if (cekPassword(password.value) == undefined) {
 			alert.innerHTML = error.ptt;
-		} else if (username.value == sandhikaGlih.nama && password.value == sandhikaGlih.password) {
+		} else if (cekUsername(username.value) && cekPassword(password.value)) {
 			form.setAttribute("onsubmit", "return true");
 			return;
 		}
