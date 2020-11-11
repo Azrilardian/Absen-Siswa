@@ -30,7 +30,9 @@ const main = () => {
 
 	// Event pada saat tiap - tiap kelas di klik
 	const tampilkanSiswaPadaKelas = () => {
+		// Function untuk menampilkan semua siswa pada kelas yang user click
 		const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
+
 		const btnSiswa = (e, i) => {
 			return `<button class="siswa ${e.kehadiran}">
 						<span class="absen">${++i}</span>
@@ -55,14 +57,15 @@ const main = () => {
 				// Tampilkan data siswa pada kelas
 				const namaKelas = target.textContent;
 				const siswa = siswaPadaKelas(namaKelas);
+				// Urutkan siswa pada kelas
 				const siswaSort = siswa.sort((a, b) => {
 					const x = a.nama;
 					const y = b.nama;
 					return x < y ? -1 : x > y ? 1 : 0;
 				});
 
-				siswaContainer.innerHTML = ""; // Hapus semua data
-				// Lalu tambahkan
+				siswaContainer.innerHTML = ""; // Hapus semua data sebelum data ditambah
+				// Tambah data
 				siswaSort.forEach((e, i) => {
 					const button = btnSiswa(e, i);
 					siswaContainer.insertAdjacentHTML("beforeend", button);
@@ -149,12 +152,16 @@ const main = () => {
 			nonActiveSiswaMethod();
 		};
 
-		const kehadiranSiswa = (target, kehadiran) => {
+		const kehadiranSiswa = (target, kehadiranSiswa) => {
 			const namaSiswa = target.parentElement.lastChild.textContent;
-			const ketSiswaDipilih = semuaSiswa.find((siswa) => siswa.nama == namaSiswa);
+			const ketSiswaDipilih = semuaSiswa.find((siswa) => siswa.nama == namaSiswa.trim());
 			// Destructuring siswa apa yang di pilih
 			const { nama, kelas, jurusan } = ketSiswaDipilih;
-			syncWithLocalStorageSiswa("UPDATE", nama, kelas, jurusan, kehadiran);
+			// Update Kehadiran Siswa ketika kehadiran siswa diubah
+			semuaSiswa.find((siswa) => {
+				if (siswa.nama == namaSiswa.trim()) siswa.kehadiran = kehadiranSiswa;
+			});
+			syncWithLocalStorageSiswa("UPDATE", nama, kelas, jurusan, kehadiranSiswa);
 		};
 
 		container.addEventListener("click", (e) => {
@@ -165,13 +172,13 @@ const main = () => {
 				spanMethod.map((e) => e.classList.toggle("active"));
 				siswa.classList.toggle("active");
 			} else if (e.target.classList.contains("izin")) {
-				e.target.parentElement.classList.remove("siswa-sakit", "siswa-bolos"); // agar siswa tidak mempunyai status ganda
+				e.target.parentElement.classList.remove("siswa-sakit", "siswa-bolos", "hadir"); // agar siswa tidak mempunyai status ganda
 				statusSiswa(e.target, "siswa-izin");
 			} else if (e.target.classList.contains("sakit")) {
-				e.target.parentElement.classList.remove("siswa-izin", "siswa-bolos");
+				e.target.parentElement.classList.remove("siswa-izin", "siswa-bolos", "hadir");
 				statusSiswa(e.target, "siswa-sakit");
 			} else if (e.target.classList.contains("bolos")) {
-				e.target.parentElement.classList.remove("siswa-izin", "siswa-sakit");
+				e.target.parentElement.classList.remove("siswa-izin", "siswa-sakit", "hadir");
 				statusSiswa(e.target, "siswa-bolos");
 			} else {
 				nonActiveSiswaMethod();
@@ -254,10 +261,10 @@ const main = () => {
 		for (let isiSiswa in semuaSiswaLocal) {
 			// Destructuring value
 			const [nama, kelas, jurusan, kehadiran] = semuaSiswaLocal[isiSiswa];
+			// Eksekusi fungsi tampikanSiswaPadaKelas();
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan, kehadiran));
 			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan, kehadiran);
 		}
-
 		// Auto hapus data kehadiran siswa setiap hari
 		const jam = new Date().getHours();
 		if (jam == 24) semuaSiswa.map((e) => (e.kehadiran = "hadir"));
