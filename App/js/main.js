@@ -22,6 +22,7 @@ const main = () => {
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {
 		cekNamaSiswa(tambahDataSiswa);
+		darkMode();
 		nama.value = "";
 		kelas.value = "";
 		jurusan.value = "";

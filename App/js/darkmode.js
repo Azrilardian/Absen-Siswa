@@ -1,17 +1,17 @@
 const darkMode = () => {
 	const switchToDark = document.querySelector("ul li.darkmode");
-	let isDark = "false";
-	isDark = localStorage.getItem("isDark");
+	let isDark = localStorage.getItem("isDark") ? localStorage.getItem("isDark") : "false";
 
 	switchToDark.addEventListener("click", function () {
-		document.body.classList.toggle("onDarkMode");
 		if (isDark == "true") {
-			switchToDark.textContent = "Switch To Lightmode";
+			switchToDark.classList.remove("active");
 			localStorage.removeItem("mode");
+			document.body.classList.remove("onDarkMode");
 			isDark = "false";
 		} else {
-			switchToDark.textContent = "Switch To Darkmode";
+			switchToDark.classList.add("active");
 			localStorage.setItem("mode", "darkmode");
+			document.body.classList.add("onDarkMode");
 			isDark = "true";
 		}
 		localStorage.setItem("isDark", isDark);
@@ -19,9 +19,10 @@ const darkMode = () => {
 
 	if (localStorage.getItem("mode") == "darkmode") {
 		document.body.classList.add("onDarkMode");
-		switchToDark.textContent = "Switch To Lightmode";
-	} else if (localStorage.getItem("mode") != "darkmode") {
-		switchToDark.textContent = "Switch To Darkmode";
+		switchToDark.classList.add("active");
+	} else {
+		switchToDark.classList.remove("active");
 	}
 };
+
 export default darkMode;
