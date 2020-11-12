@@ -4,14 +4,15 @@ import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalS
 
 const main = () => {
 	//? Inisialisasi Variabel
+	const container = document.querySelector(".container-fluid");
 	const kelasContainer = document.querySelector(".nama-kelas");
 	const siswaContainer = document.querySelector(".right .isi-siswa");
 	const nama = document.getElementById("nama");
 	const kelas = document.getElementById("kelas");
 	const jurusan = document.getElementById("jurusan");
 	const btnTambah = document.querySelector("#btn-tambah");
-	const semuaSiswa = [];
-	const semuaKelas = [];
+	let semuaSiswa = [];
+	let semuaKelas = [];
 
 	// SideBar
 	sideBarActivation();
@@ -22,26 +23,64 @@ const main = () => {
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {
 		cekNamaSiswa(tambahDataSiswa);
+		siswaPadaKelasApa(kelas.value);
+		tampilkanSiswaPadaKelas();
+
 		darkMode();
+
 		nama.value = "";
 		kelas.value = "";
 		jurusan.value = "";
 	});
 
-	// Event pada saat tiap - tiap kelas di klik
-	const tampilkanSiswaPadaKelas = () => {
-		// Function untuk menampilkan semua siswa pada kelas yang user click
-		const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
+	// Function untuk menampilkan semua siswa pada kelas yang user click
+	const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
 
-		const btnSiswa = (e, i) => {
-			return `<button class="siswa ${e.kehadiran}">
+	// Render Html Siswa
+	const btnSiswa = (e, i) => {
+		return `<button class="siswa ${e.kehadiran}">
 						<span class="absen">${++i}</span>
 						<span class="sakit method">S</span>
 						<span class="izin method">I</span>
-						<span class="bolos method">B</span>${e.nama}
+						<span class="bolos method">B</span>
+						<span class="siswa-rename fitur">R</span>
+						<span class="siswa-hapus fitur">D</span>${e.nama}
 					</button>`;
-		};
+	};
 
+	const siswaPadaKelasApa = (value) => {
+		const namaKelasContainer = document.querySelector(".siswa-pada-kelas");
+		namaKelasContainer.innerHTML = "";
+		namaKelasContainer.innerHTML = `ABSEN KELAS<span id="nama-kelas-siswa">${value}</span>`;
+	};
+
+	const tampilkanSiswaPadaKelas = () => {
+		// Tampilkan data siswa pada kelas
+		let namaKelas = document.getElementById("nama-kelas-siswa"); // Cek apakah nama-kelas-siswa ada isinya
+		if (namaKelas) {
+			namaKelas = document.getElementById("nama-kelas-siswa").textContent;
+		} else {
+			namaKelas = kelas.value;
+		}
+		const siswa = siswaPadaKelas(namaKelas);
+		// Urutkan siswa pada kelas
+		const siswaSort = siswa.sort((a, b) => {
+			const x = a.nama;
+			const y = b.nama;
+			return x < y ? -1 : x > y ? 1 : 0;
+		});
+		console.log(siswaSort);
+
+		siswaContainer.innerHTML = ""; // Hapus semua data sebelum data ditambah
+		// Tambah data
+		siswaSort.forEach((e, i) => {
+			const button = btnSiswa(e, i);
+			siswaContainer.insertAdjacentHTML("beforeend", button);
+		});
+	};
+
+	// Event pada saat tiap - tiap kelas di klik
+	const namaKelasClick = () => {
 		kelasContainer.addEventListener("click", (e) => {
 			const target = e.target;
 			if (target.classList.contains("kelas-siswa")) {
@@ -50,30 +89,12 @@ const main = () => {
 				kelasSiswa.forEach((e) => e.classList.remove("active"));
 				target.classList.add("active");
 
-				// Siswa pada kelas apa
-				const namaKelasContainer = document.querySelector(".siswa-pada-kelas");
-				namaKelasContainer.textContent = `ABSEN KELAS ${target.textContent}`;
-
-				// Tampilkan data siswa pada kelas
-				const namaKelas = target.textContent;
-				const siswa = siswaPadaKelas(namaKelas);
-				// Urutkan siswa pada kelas
-				const siswaSort = siswa.sort((a, b) => {
-					const x = a.nama;
-					const y = b.nama;
-					return x < y ? -1 : x > y ? 1 : 0;
-				});
-
-				siswaContainer.innerHTML = ""; // Hapus semua data sebelum data ditambah
-				// Tambah data
-				siswaSort.forEach((e, i) => {
-					const button = btnSiswa(e, i);
-					siswaContainer.insertAdjacentHTML("beforeend", button);
-				});
+				siswaPadaKelasApa(target.textContent);
+				tampilkanSiswaPadaKelas(target);
 			}
 		});
 	};
-	tampilkanSiswaPadaKelas();
+	namaKelasClick();
 
 	//? Ambil Data Siswa
 	function Siswa(nama, kelas, jurusan, kehadiran) {
@@ -88,12 +109,25 @@ const main = () => {
 		this.kelas = kelas;
 	}
 
-	const tambahDataSiswa = (nama, kelas, jurusan) => {
+	const tambahKelas = () => {
+		// Hapus semua kelas sebelum ditambah
+		const kelasSiswa = document.querySelectorAll(".kelas-siswa");
+		kelasSiswa.forEach((e) => e.remove());
+
+		const kelasSort = semuaKelas.map((e) => e.kelas).sort();
+
+		kelasSort.map((e) => {
+			const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e}">${e}</button>`;
+			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+		});
+	};
+
+	const tambahDataSiswa = (nama, kelas, jurusan, kehadiran) => {
 		const cekDuplikasiNamaKelas = semuaKelas.find((e) => e.kelas == kelas);
 		if (cekDuplikasiNamaKelas) {
 			// Jangan buat kelas ketika kelas sudah ada
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
-			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan);
+			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan, kehadiran);
 			closeBootstrapModal();
 			showBootstrapAlert(".alert-success", nama, kelas);
 			return;
@@ -102,17 +136,7 @@ const main = () => {
 			semuaKelas.push(new Kelas(kelas));
 			syncWithLocalStorageKelas("ADD", kelas);
 			closeBootstrapModal();
-
-			// Hapus semua kelas sebelum ditambah
-			const kelasSiswa = document.querySelectorAll(".kelas-siswa");
-			kelasSiswa.forEach((e) => e.remove());
-
-			const kelasSort = semuaKelas.map((e) => e.kelas).sort();
-
-			kelasSort.map((e) => {
-				const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e}">${e}</button>`;
-				kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
-			});
+			tambahKelas();
 		}
 
 		//? Add Data
@@ -130,17 +154,17 @@ const main = () => {
 			showBootstrapAlert(".alert-warning", nama.value, kelas.value);
 		} else {
 			// Callback
-			tambahData(nama.value, kelas.value, jurusan.value);
+			tambahData(nama.value.toLowerCase(), kelas.value, jurusan.value);
 		}
 	};
 
-	const metodepadaSiswa = () => {
-		const container = document.querySelector(".container-fluid");
-
-		const nonActiveSiswaMethod = () => {
+	const metodePadaSiswa = () => {
+		const nonActiveSiswaMethodDanFitur = () => {
 			const allSpanMethod = document.querySelectorAll("span.method");
+			const allSpanFitur = document.querySelectorAll("span.fitur");
 			const allSiswa = document.querySelectorAll("button.siswa");
 			allSpanMethod.forEach((e) => e.classList.remove("active"));
+			allSpanFitur.forEach((e) => e.classList.remove("active"));
 			allSiswa.forEach((e) => e.classList.remove("active"));
 		};
 
@@ -149,7 +173,7 @@ const main = () => {
 			const status = siswa.classList.toggle(statusSiswa);
 			const kehadiran = status ? statusSiswa : "hadir";
 			kehadiranSiswa(target, kehadiran);
-			nonActiveSiswaMethod();
+			nonActiveSiswaMethodDanFitur();
 		};
 
 		const kehadiranSiswa = (target, kehadiranSiswa) => {
@@ -169,8 +193,15 @@ const main = () => {
 				const siswa = e.target;
 				// munculkan semua metode pada siswa
 				const spanMethod = [siswa.children[1], siswa.children[2], siswa.children[3]];
+				const fiturSiswa = [siswa.children[4], siswa.children[5]];
+
+				// Hapus fitur siswa ketika metode pada siswa aktif
+				fiturSiswa.map((e) => e.classList.remove("active"));
 				spanMethod.map((e) => e.classList.toggle("active"));
-				siswa.classList.toggle("active");
+				if (spanMethod[0].classList.contains("active")) siswa.classList.add("active");
+				else {
+					siswa.classList.remove("active");
+				}
 			} else if (e.target.classList.contains("izin")) {
 				e.target.parentElement.classList.remove("siswa-sakit", "siswa-bolos", "hadir"); // agar siswa tidak mempunyai status ganda
 				statusSiswa(e.target, "siswa-izin");
@@ -181,11 +212,66 @@ const main = () => {
 				e.target.parentElement.classList.remove("siswa-izin", "siswa-sakit", "hadir");
 				statusSiswa(e.target, "siswa-bolos");
 			} else {
-				nonActiveSiswaMethod();
+				nonActiveSiswaMethodDanFitur();
 			}
 		});
 	};
-	metodepadaSiswa();
+	metodePadaSiswa();
+
+	const fiturPadaSiswa = () => {
+		const hapusSiswa = (target) => {
+			const siswaUpdate = [];
+			semuaSiswa.filter((siswa) => {
+				if (siswa.nama != target) siswaUpdate.push(siswa);
+			});
+			semuaSiswa = siswaUpdate;
+		};
+
+		const hapusKelasSiswa = (namaKelas) => {
+			const cekKelas = semuaSiswa.filter((siswa) => siswa.kelas == namaKelas);
+			if (cekKelas.length == 0) {
+				const kelasUpdate = [];
+				semuaKelas.filter((kelasSiswa) => {
+					if (kelasSiswa.kelas != namaKelas) kelasUpdate.push(kelasSiswa);
+				});
+				semuaKelas = kelasUpdate;
+				syncWithLocalStorageKelas("DELETE", namaKelas);
+			}
+			if (semuaKelas.length == 0) {
+				const kelasSiswa = (document.getElementById("nama-kelas-siswa").textContent = "");
+			}
+		};
+
+		container.addEventListener("dblclick", (e) => {
+			if (e.target.classList.contains("siswa")) {
+				const siswa = e.target;
+				const spanMethod = [siswa.children[1], siswa.children[2], siswa.children[3]];
+				const fiturSiswa = [siswa.children[4], siswa.children[5]];
+
+				// Hapus metode siswa ketika fitur pada siswa aktif
+				spanMethod.map((e) => e.classList.remove("active"));
+				fiturSiswa.map((e) => e.classList.toggle("active"));
+				if (fiturSiswa[0].classList.contains("active")) siswa.classList.add("active");
+				else {
+					siswa.classList.remove("active");
+				}
+			}
+		});
+
+		container.addEventListener("click", (e) => {
+			if (e.target.classList.contains("siswa-hapus")) {
+				const kelasSiswa = document.getElementById("nama-kelas-siswa").textContent.trim();
+				const namaSiswa = e.target.parentElement.lastChild.textContent.trim();
+				hapusSiswa(namaSiswa);
+				hapusKelasSiswa(kelasSiswa);
+				tambahKelas();
+				syncWithLocalStorageSiswa("DELETE", namaSiswa);
+				tampilkanSiswaPadaKelas();
+			}
+		});
+	};
+
+	fiturPadaSiswa();
 
 	//! Otomatis memperbesar huruf pada semua inputan
 	const input = document.querySelectorAll("input");

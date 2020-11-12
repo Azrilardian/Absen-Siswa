@@ -8,6 +8,9 @@ const syncWithLocalStorageKelas = (status, kelas) => {
 		case "ADD":
 			semuaKelas[kelas] = [kelas];
 			break;
+		case "DELETE":
+			delete semuaKelas[kelas];
+			break;
 		default:
 			break;
 	}
@@ -20,6 +23,9 @@ const syncWithLocalStorageSiswa = (status, nama, kelas, jurusan, kehadiran = "ha
 		case "ADD":
 		case "UPDATE":
 			semuaSiswa[nama] = [nama, kelas, jurusan, kehadiran];
+			break;
+		case "DELETE":
+			delete semuaSiswa[nama];
 			break;
 		default:
 			break;

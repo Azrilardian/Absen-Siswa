@@ -9,14 +9,18 @@
 .right .siswa-pada-kelas {
 	background-color: white;
 	height: 45px;
-	display: grid;
-	place-content: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	margin-bottom: 30px;
 	font-weight: 600;
 	border-radius: 7px;
 	box-shadow: 1px 1px 5px #3b3b3b7c;
 	text-transform: uppercase;
 	transition: 0.2s ease-in-out;
+}
+.right .siswa-pada-kelas span {
+	margin-left: 5px;
 }
 
 .right button span {
@@ -46,9 +50,37 @@
 	transition: 0.2s ease-in-out;
 	color: #222222;
 }
+
 .right button span.method.active {
-	transform: translate(-50%, 0%);
+	transform: translate(-50%, 0);
 }
+
+.right button span.fitur {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 700;
+	transform: translate(-50%, 150%);
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	transition: 0.2s ease-in-out;
+	color: #222222;
+}
+
+.right button span.fitur.active {
+	transform: translate(-50%, 0);
+}
+
+.right button span.siswa-hapus {
+	background-color: #fa4f4f;
+	left: 45%;
+}
+
+.right button span.siswa-rename {
+	background-color: orange;
+	left: 55%;
+}
+
 .right button span.method.sakit {
 	background-color: #fce566;
 	left: 50%;
