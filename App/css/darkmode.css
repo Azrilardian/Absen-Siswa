@@ -16,16 +16,21 @@
 	color: white;
 }
 
-.onDarkMode .right button.siswa.active {
+.onDarkMode button.siswa {
+	background-color: #0b1d27;
+	color: white;
+}
+
+.onDarkMode button.siswa.active {
 	background-color: #162636ef !important;
+}
+
+.onDarkMode .right button input {
+	color: white;
 }
 
 .onDarkMode button span.absen {
 	background-color: #192c3b !important;
-}
-.onDarkMode button.siswa {
-	background-color: #0b1d27;
-	color: white;
 }
 
 .onDarkMode .burger span {

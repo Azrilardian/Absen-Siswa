@@ -7,6 +7,7 @@ const main = () => {
 	const container = document.querySelector(".container-fluid");
 	const kelasContainer = document.querySelector(".nama-kelas");
 	const siswaContainer = document.querySelector(".right .isi-siswa");
+	const spanNamaKelas = document.getElementById("nama-kelas-siswa");
 	const nama = document.getElementById("nama");
 	const kelas = document.getElementById("kelas");
 	const jurusan = document.getElementById("jurusan");
@@ -23,9 +24,8 @@ const main = () => {
 	// Event pada saat tombol tambah di klik
 	btnTambah.addEventListener("click", () => {
 		cekNamaSiswa(tambahDataSiswa);
-		siswaPadaKelasApa(kelas.value);
+		spanNamaKelas.textContent = kelas.value;
 		tampilkanSiswaPadaKelas();
-
 		darkMode();
 
 		nama.value = "";
@@ -33,50 +33,46 @@ const main = () => {
 		jurusan.value = "";
 	});
 
-	// Function untuk menampilkan semua siswa pada kelas yang user click
 	const siswaPadaKelas = (namaKelas) => semuaSiswa.filter((e) => e.kelas == namaKelas);
 
-	// Render Html Siswa
-	const btnSiswa = (e, i) => {
-		return `<button class="siswa ${e.kehadiran}">
+	const buatButtonSemuaSiswa = (semuaSiswa) => {
+		// Render Html Siswa
+		const btnSiswa = (e, i) => {
+			return `<button class="siswa ${e.kehadiran}">
 						<span class="absen">${++i}</span>
 						<span class="sakit method">S</span>
 						<span class="izin method">I</span>
 						<span class="bolos method">B</span>
+						<span class="siswa-hapus fitur">D</span>
 						<span class="siswa-rename fitur">R</span>
-						<span class="siswa-hapus fitur">D</span>${e.nama}
+						<input type="text">${e.nama}
 					</button>`;
-	};
+		};
 
-	const siswaPadaKelasApa = (value) => {
-		const namaKelasContainer = document.querySelector(".siswa-pada-kelas");
-		namaKelasContainer.innerHTML = "";
-		namaKelasContainer.innerHTML = `ABSEN KELAS<span id="nama-kelas-siswa">${value}</span>`;
+		semuaSiswa.map((e, i) => {
+			const button = btnSiswa(e, i);
+			siswaContainer.insertAdjacentHTML("beforeend", button);
+		});
 	};
 
 	const tampilkanSiswaPadaKelas = () => {
-		// Tampilkan data siswa pada kelas
-		let namaKelas = document.getElementById("nama-kelas-siswa"); // Cek apakah nama-kelas-siswa ada isinya
-		if (namaKelas) {
-			namaKelas = document.getElementById("nama-kelas-siswa").textContent;
-		} else {
+		// Ketika ada, ambil text contentnya
+		let namaKelas;
+		if (spanNamaKelas.textContent.length > 1) namaKelas = spanNamaKelas.textContent;
+		// Jika tidak, ambil hasil input kelas siswa
+		else {
 			namaKelas = kelas.value;
 		}
-		const siswa = siswaPadaKelas(namaKelas);
+		const isiSiswa = siswaPadaKelas(namaKelas);
 		// Urutkan siswa pada kelas
-		const siswaSort = siswa.sort((a, b) => {
+		const urutkanSiswaBerdasarkanAbsen = isiSiswa.sort((a, b) => {
 			const x = a.nama;
 			const y = b.nama;
 			return x < y ? -1 : x > y ? 1 : 0;
 		});
-		console.log(siswaSort);
 
 		siswaContainer.innerHTML = ""; // Hapus semua data sebelum data ditambah
-		// Tambah data
-		siswaSort.forEach((e, i) => {
-			const button = btnSiswa(e, i);
-			siswaContainer.insertAdjacentHTML("beforeend", button);
-		});
+		buatButtonSemuaSiswa(urutkanSiswaBerdasarkanAbsen);
 	};
 
 	// Event pada saat tiap - tiap kelas di klik
@@ -89,15 +85,15 @@ const main = () => {
 				kelasSiswa.forEach((e) => e.classList.remove("active"));
 				target.classList.add("active");
 
-				siswaPadaKelasApa(target.textContent);
-				tampilkanSiswaPadaKelas(target);
+				spanNamaKelas.textContent = target.textContent;
+				tampilkanSiswaPadaKelas();
 			}
 		});
 	};
 	namaKelasClick();
 
 	//? Ambil Data Siswa
-	function Siswa(nama, kelas, jurusan, kehadiran) {
+	function Siswa(nama, kelas, jurusan, kehadiran = "hadir") {
 		this.nama = nama;
 		this.kelas = kelas;
 		this.jurusan = jurusan;
@@ -109,17 +105,20 @@ const main = () => {
 		this.kelas = kelas;
 	}
 
+	const buatButtonSemuaKelas = (semuaKelas) => {
+		semuaKelas.map((e) => {
+			const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e}">${e}</button>`;
+			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
+		});
+	};
+
 	const tambahKelas = () => {
 		// Hapus semua kelas sebelum ditambah
 		const kelasSiswa = document.querySelectorAll(".kelas-siswa");
 		kelasSiswa.forEach((e) => e.remove());
 
-		const kelasSort = semuaKelas.map((e) => e.kelas).sort();
-
-		kelasSort.map((e) => {
-			const BuatBtnKelas = `<button class="kelas blue-btn kelas-siswa ${e}">${e}</button>`;
-			kelasContainer.insertAdjacentHTML("beforeend", BuatBtnKelas);
-		});
+		const urutkanKelasBerdasarkanNama = semuaKelas.map((e) => e.kelas).sort();
+		buatButtonSemuaKelas(urutkanKelasBerdasarkanNama);
 	};
 
 	const tambahDataSiswa = (nama, kelas, jurusan, kehadiran) => {
@@ -154,7 +153,7 @@ const main = () => {
 			showBootstrapAlert(".alert-warning", nama.value, kelas.value);
 		} else {
 			// Callback
-			tambahData(nama.value.toLowerCase(), kelas.value, jurusan.value);
+			tambahData(nama.value.toUpperCase(), kelas.value, jurusan.value);
 		}
 	};
 
@@ -238,8 +237,25 @@ const main = () => {
 				syncWithLocalStorageKelas("DELETE", namaKelas);
 			}
 			if (semuaKelas.length == 0) {
-				const kelasSiswa = (document.getElementById("nama-kelas-siswa").textContent = "");
+				spanNamaKelas.textContent = "";
 			}
+		};
+
+		const renameSiswa = (namaSiswaSebelum, namaSiswaSesudah, target) => {
+			semuaSiswa.find((siswa) => {
+				// Cari siswa yang ingin diubah namanya
+				if (siswa.nama == namaSiswaSebelum) {
+					// Lalu ubah nama siswa
+					siswa.nama = namaSiswaSesudah;
+					target.parentElement.lastChild.textContent = namaSiswaSesudah;
+					// Destructuring siswa apa yang dipilih
+					const { nama, kelas, jurusan, kehadiran } = siswa;
+
+					// Hapus dulu data siswa yang lama pada local storage, setelah itu tambah siswa yang telah direname
+					syncWithLocalStorageSiswa("DELETE", namaSiswaSebelum);
+					syncWithLocalStorageSiswa("UPDATE", namaSiswaSesudah, kelas, jurusan, kehadiran);
+				}
+			});
 		};
 
 		container.addEventListener("dblclick", (e) => {
@@ -267,6 +283,21 @@ const main = () => {
 				tambahKelas();
 				syncWithLocalStorageSiswa("DELETE", namaSiswa);
 				tampilkanSiswaPadaKelas();
+			} else if (e.target.classList.contains("siswa-rename")) {
+				const target = e.target;
+				let namaSiswa = target.parentElement.lastChild.textContent;
+				const inputNamaSiswa = target.nextElementSibling;
+				inputNamaSiswa.classList.add("active");
+				inputNamaSiswa.focus();
+				inputNamaSiswa.value = namaSiswa.trim();
+				target.parentElement.lastChild.textContent = "";
+
+				inputNamaSiswa.addEventListener("keyup", (e) => {
+					if (e.keyCode === 13) {
+						renameSiswa(namaSiswa.trim(), inputNamaSiswa.value, target);
+						inputNamaSiswa.classList.remove("active");
+					}
+				});
 			}
 		});
 	};

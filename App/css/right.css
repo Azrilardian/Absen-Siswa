@@ -39,6 +39,22 @@
 	border-radius: 7px;
 }
 
+.right button input {
+	display: none;
+	border: none;
+	outline: none;
+	font-weight: 500;
+	color: var(--default-black-color);
+	width: 100%;
+	transform: translateX(-2px);
+	letter-spacing: 1px;
+	background-color: transparent;
+}
+
+.right button input.active {
+	display: unset;
+}
+
 .right button span.method {
 	width: 25px;
 	height: 25px;
