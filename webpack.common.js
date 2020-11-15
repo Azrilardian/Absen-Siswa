@@ -24,12 +24,12 @@ module.exports = {
 	},
 	plugins: [
 		new htmlWebpackPlugin({
-			template: "./App/index.html",
-			filename: "index.html",
-		}),
-		new htmlWebpackPlugin({
 			template: "./App/absen.html",
 			filename: "absen.html",
+		}),
+		new htmlWebpackPlugin({
+			template: "./App/index.html",
+			filename: "index.html",
 		}),
 	],
 };
