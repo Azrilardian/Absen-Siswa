@@ -18,12 +18,13 @@ body,
 .container {
 	display: flex;
 	justify-content: center;
+	height: 100vh !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 body {
 	position: relative;
-	background-color: rgb(240, 240, 240);
-	height: 100vh;
 	font-family: "Poppins", sans-serif;
 }
 

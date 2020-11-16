@@ -1,5 +1,5 @@
-import sideBarActivation from "./sidebar";
 import darkMode from "./darkmode";
+import swalSett from "./sweetAlertConfiguration";
 import { STORAGE_KELAS, STORAGE_SISWA, syncWithLocalStorageKelas, syncWithLocalStorageSiswa } from "./saveDataSiswa";
 
 const main = () => {
@@ -14,9 +14,6 @@ const main = () => {
 	const btnTambah = document.querySelector("#btn-tambah");
 	let semuaSiswa = [];
 	let semuaKelas = [];
-
-	// SideBar
-	sideBarActivation();
 
 	// Darkmode
 	darkMode();
@@ -153,7 +150,7 @@ const main = () => {
 			semuaSiswa.push(new Siswa(nama, kelas, jurusan));
 			syncWithLocalStorageSiswa("ADD", nama, kelas, jurusan, kehadiran);
 			closeBootstrapModal();
-			showBootstrapAlert(".alert-success", nama, kelas);
+			showAlert(".alert-success", nama, kelas);
 			return;
 		}
 
@@ -173,11 +170,11 @@ const main = () => {
 		// Cek apakah semua data diisi atau tidak
 		if (nama.value == "" || kelas.value == "" || jurusan.value == "") {
 			closeBootstrapModal();
-			showBootstrapAlert(".alert-warning");
+			showAlert(".alert-warning");
 			// Ketika siswa sudah terdaftar
 		} else if (cekDuplikasiNamaSiswa) {
 			closeBootstrapModal();
-			showBootstrapAlert(".alert-warning", nama.value);
+			showAlert(".alert-warning", nama.value);
 			// Ketika siswa belum terdaftar
 		} else {
 			tambahData(nama.value.toUpperCase(), kelas.value, jurusan.value); // Callback
@@ -379,27 +376,20 @@ const main = () => {
 		modalOverlay.remove();
 	};
 
-	const showBootstrapAlert = (selector, namaSiswa, namaKelas) => {
-		const alert = document.querySelector(selector);
-		alert.classList.add("active");
+	const showAlert = (selector, namaSiswa, namaKelas) => {
 		if (selector === ".alert-warning") {
 			// Cek apakah parameter namaSiswa diisi
 			if (namaSiswa != undefined) {
-				alert.style.width = "500px";
-				alert.innerHTML = `<p><strong>${namaSiswa.toUpperCase()}</strong> Sudah Terdaftar</p>`;
+				swalSett("INFO", `${namaSiswa.toUpperCase()} Sudah Terdaftar`, "info", "OK");
 			} else {
-				alert.style.width = "350px";
-				alert.innerHTML = `<p>Semua Data Harus Diisi !</p>`;
+				swalSett("WARNING", "Semua Data Harus Diisi", "warning", "OK");
 			}
 		} else if (selector === ".alert-success") {
 			// Cek apakah parameter namaSiswa dan namaKelas diisi
 			if (namaSiswa != undefined && namaKelas != undefined) {
-				alert.style.width = "550px";
-				alert.innerHTML = `<p><strong>${namaSiswa.toUpperCase()}</strong> Berhasil Ditambah Pada Kelas ${namaKelas}</p>`;
+				swalSett("SUCCES", `${namaSiswa.toUpperCase()} Berhasil Ditambah Pada Kelas ${namaKelas}`, "success", "OK");
 			}
 		}
-		setTimeout(() => alert.classList.remove("active"), 2000);
-		setTimeout(() => (alert.innerHTML = ""), 3500);
 	};
 
 	const tanggal = () => {

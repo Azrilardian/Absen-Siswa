@@ -1,8 +1,20 @@
+const swalSett = (title, text, icon, confirmButtonText) => {
+	Swal.fire({
+		title: title,
+		text: text,
+		icon: icon,
+		confirmButtonText: confirmButtonText,
+		position: "top",
+	});
+};
+
+// import swalSett from "./sweetAlertConfiguration";
+
 //? Allneed
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 let input = document.querySelectorAll("input");
-const alert = document.getElementById("alert");
+// const alert = document.getElementById("alert");
 const button = document.getElementById("submit");
 const form = document.getElementById("login-form");
 const dataLogin = [];
@@ -13,11 +25,8 @@ input.forEach((e) => {
 		e.previousElementSibling.classList.add("focus");
 	});
 	e.addEventListener("focusout", function () {
-		if (e.value != "") {
-			return;
-		} else {
-			e.previousElementSibling.classList.remove("focus");
-		}
+		if (e.value != "") return;
+		e.previousElementSibling.classList.remove("focus");
 		e.parentElement.style.borderBottomColor = "#b4b4b4b4";
 	});
 });
@@ -44,41 +53,26 @@ const cekPassword = (password) => {
 	return allPassword;
 };
 
-let error = {
-	uK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Username Kosong.`,
-	pK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Password Kosong.`,
-	upK: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Username dan Password Kosong.`,
-	utt: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Anda bukan guru Sman 3 Mataram`,
-	ptt: `<i class="fa fa-exclamation-circle"></i>Tidadk dapat login. Password tidak terdaftar`,
-	uptt: `<i class="fa fa-exclamation-circle"></i>Tidak dapat login. Guru tidak terdaftar.`,
-};
-
 //? Form Validation
 button.addEventListener("click", function () {
 	if (username.value == "" || password.value == "") {
 		if (username.value != "") {
-			alert.innerHTML = error.pK;
+			swalSett("ERROR", "Tidak dapat login. Password Kosong.", "error", "OK");
 		} else if (password.value != "") {
-			alert.innerHTML = error.uK;
+			swalSett("ERROR", "Tidak dapat login. Username Kosong.", "error", "OK");
 		} else {
-			alert.innerHTML = error.upK;
+			swalSett("ERROR", "Tidak dapat login. Username dan Password Kosong.", "error", "OK");
 		}
 	} else if (username.value != "" || password.value != "") {
 		if (cekUsername(username.value) == undefined && cekPassword(password.value) == undefined) {
-			alert.innerHTML = error.uptt;
+			swalSett("ERROR", "Tidak dapat login. Guru tidak terdaftar.", "error", "OK");
 		} else if (cekUsername(username.value) == undefined) {
-			alert.innerHTML = error.utt;
+			swalSett("ERROR", "Tidak dapat login. Anda bukan guru Sman 3 Mataram.", "error", "OK");
 		} else if (cekPassword(password.value) == undefined) {
-			alert.innerHTML = error.ptt;
-		} else if (cekUsername(username.value) && cekPassword(password.value)) {
+			swalSett("ERROR", "Tidak dapat login. Password tidak terdaftar.", "error", "OK");
+		} else {
+			swalSett("SUCCESS", "Berhasil Login", "success", "OK");
 			form.setAttribute("onsubmit", "return true");
-			return;
 		}
 	}
-	alert.style.opacity = "1";
-	alert.style.top = "2%";
-	setTimeout(function () {
-		alert.style.top = "-11%";
-		alert.style.opacity = "0";
-	}, 3000);
 });

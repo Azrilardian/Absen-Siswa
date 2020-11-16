@@ -5,7 +5,6 @@
 
 html body {
 	font-family: "Poppins", sans-serif;
-	padding: 30px;
 	height: 100vh;
 	user-select: none;
 }
@@ -30,7 +29,7 @@ input:focus {
 }
 
 .container-fluid {
-	height: 100%;
+	height: 100vh;
 	display: flex;
 	position: relative;
 	box-shadow: 3px 3px 15px #cccccc;
