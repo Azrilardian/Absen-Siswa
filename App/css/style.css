@@ -1,6 +1,7 @@
 @import "./left.css";
 @import "./right.css";
 @import "./darkmode.css";
+@import "./sweetalert.css";
 @import "./bootstrap-style.css";
 
 html body {
