@@ -1,0 +1,19 @@
+.swal2-modal {
+	width: 430px !important;
+	height: 330px !important;
+}
+
+.swal2-title {
+	font-size: 22px;
+}
+.swal2-content {
+	font-size: 16px;
+}
+
+.swal2-icon {
+	margin: 0 0 20px 0 !important;
+}
+
+.mark-line-left {
+	height: 10px !important;
+}

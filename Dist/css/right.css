@@ -1,0 +1,147 @@
+.right {
+	width: 30%;
+	background: var(--blue-gradient);
+	padding: 20px;
+	transition: 0.2s ease-in;
+	overflow: auto;
+}
+
+.right .siswa-pada-kelas {
+	background-color: white;
+	height: 45px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30px;
+	font-weight: 600;
+	border-radius: 7px;
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	text-transform: uppercase;
+	transition: 0.2s ease-in-out;
+}
+.right .siswa-pada-kelas span {
+	margin-left: 5px;
+}
+
+.right button span {
+	position: absolute;
+	display: grid;
+	place-content: center;
+	color: white;
+}
+.right button span.absen {
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 100%;
+	background-color: #383838;
+	font-weight: 500;
+	border-radius: 7px;
+}
+
+.right button input {
+	display: none;
+	border: none;
+	outline: none;
+	font-weight: 500;
+	color: var(--default-black-color);
+	width: 100%;
+	transform: translateX(-2px);
+	letter-spacing: 1px;
+	background-color: transparent;
+}
+
+.right button input.active {
+	display: unset;
+}
+
+.right button span.method {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 700;
+	transform: translate(-50%, 150%);
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	transition: 0.2s ease-in-out;
+	color: #222222;
+}
+
+.right button span.method.active {
+	transform: translate(-50%, 0);
+}
+
+.right button span.fitur {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	font-size: 13px;
+	font-weight: 700;
+	transform: translate(-50%, 150%);
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	transition: 0.2s ease-in-out;
+	color: #222222;
+}
+
+.right button span.fitur.active {
+	transform: translate(-50%, 0);
+}
+
+.right button span.siswa-hapus {
+	background-color: #fa4f4f;
+	left: 45%;
+}
+
+.right button span.siswa-rename {
+	background-color: orange;
+	left: 55%;
+}
+
+.right button span.method.sakit {
+	background-color: #fce566;
+	left: 50%;
+	transition-delay: 0.1s;
+}
+.right button span.method.izin {
+	background-color: #469e2f;
+	left: 40%;
+	transition-delay: 0.05s;
+}
+.right button span.method.bolos {
+	background-color: #fa4f4f;
+	left: 60%;
+	transition-delay: 0.15s;
+}
+
+.right button.siswa {
+	position: relative;
+	width: 100%;
+	height: 40px;
+	border: none;
+	margin-bottom: 6px;
+	padding: 2px;
+	font-weight: 500;
+	background-color: white;
+	color: var(--default-black-color);
+	letter-spacing: 1px;
+	border-radius: 7px;
+	overflow: hidden;
+	text-transform: uppercase;
+	box-shadow: 1px 1px 5px #3b3b3b7c;
+	text-align: left;
+	padding-left: 50px;
+	overflow: hidden;
+	transition: 0.2s ease-in-out;
+}
+.right button.siswa.active {
+	background-color: #464646c0 !important;
+}
+.right button.siswa.siswa-izin {
+	background-color: #459e2fab;
+}
+.right button.siswa.siswa-sakit {
+	background-color: #fce566b9;
+}
+.right button.siswa.siswa-bolos {
+	background-color: #fa4f4fb9;
+}

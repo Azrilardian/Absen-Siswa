@@ -1,0 +1,54 @@
+.onDarkMode {
+	background-color: #0b1d27 !important;
+}
+
+.onDarkMode .container-fluid {
+	background-color: #0b1d27 !important;
+	box-shadow: 2px 1px 10px #0a5ebe;
+}
+
+.onDarkMode .left {
+	background-color: #0b1d27 !important;
+}
+
+.onDarkMode .siswa-pada-kelas {
+	background-color: #0b1d27 !important;
+	color: white;
+}
+
+.onDarkMode button.siswa {
+	background-color: #0b1d27;
+	color: white;
+}
+
+.onDarkMode button.siswa.active {
+	background-color: #162636ef !important;
+}
+
+.onDarkMode .right button input {
+	color: white;
+}
+
+.onDarkMode button span.absen {
+	background-color: #192c3b !important;
+}
+
+.onDarkMode .burger span {
+	background-color: #0b1d27 !important;
+}
+
+.onDarkMode .blue-btn {
+	box-shadow: 1px 1px 5px #0a5ebecb;
+}
+
+.onDarkMode .blue-btn:hover {
+	transform: scale(0.98);
+}
+.onDarkMode button.kelas-siswa:active {
+	transform: scale(0.99);
+	border: 2px solid #0a5ebe;
+}
+.onDarkMode button.kelas-siswa.active {
+	transform: scale(0.99);
+	border: 2px solid #0a5ebe;
+}
