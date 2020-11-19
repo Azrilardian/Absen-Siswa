@@ -7,11 +7,14 @@
 }
 
 .modal .modal-body label {
-	width: 20%;
+	width: 30%;
+}
+.modal .modal-body div {
+	font-size: 14px;
 }
 
 .modal .modal-body input {
-	width: 80%;
+	width: 70%;
 }
 .modal .modal-footer button#btn-tambah {
 	background: var(--blue-gradient);
