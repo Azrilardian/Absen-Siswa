@@ -4,11 +4,11 @@ require("jquery");
 
 require("popper.js");
 
-require("../Dist/css/bootstrap.min.css");
+require("./css/bootstrap.min.css");
 
-require("../Dist/css/style.css");
+require("./css/style.css");
 
-var _main = _interopRequireDefault(require("../Dist/js/main"));
+var _main = _interopRequireDefault(require("./js/main"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

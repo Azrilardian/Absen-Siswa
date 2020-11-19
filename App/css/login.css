@@ -192,3 +192,16 @@ p#alert i {
 	margin-right: 5px;
 	padding-top: 3px;
 }
+
+@media (max-width: 480px) {
+	.login-section {
+		width: 310px;
+	}
+	header {
+		padding: 20px 30px;
+	}
+	form {
+		position: relative;
+		padding: 20px 30px 80px 30px;
+	}
+}
