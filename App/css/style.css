@@ -238,3 +238,12 @@ button.kelas-siswa.active {
 		visibility: hidden;
 	}
 }
+
+@media screen and (max-width: 480px) {
+	.blue-btn {
+		width: 95px;
+		height: 95px;
+		margin: 7px;
+		font-size: 13px;
+	}
+}

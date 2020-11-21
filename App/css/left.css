@@ -16,6 +16,12 @@
 	background: var(--blue-gradient-reverse);
 }
 
+.left .main-section button i {
+	font-size: 17px;
+	font-weight: 600;
+	color: white;
+}
+
 .left .ket-guru {
 	grid-area: ket-guru;
 }
