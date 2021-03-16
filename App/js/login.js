@@ -41,7 +41,7 @@ User.prototype.push = function () {
 	return dataLogin.push(this);
 };
 let sandhikaGlih = new User("Sandhika Galih", "wpunpas2020").push();
-let azrilArdian = new User("Azril ardian", "Luckyman05").push();
+let azrilArdian = new User("Azril ardian", "12345678").push();
 
 const cekUsername = (nama) => {
 	const allUserName = dataLogin.find((e) => e.nama == nama);

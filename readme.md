@@ -29,15 +29,26 @@ Ini merupakan program absen siswa yang dapat memudahkan guru untuk melakukan abs
 
 ## Catatan
 
-_Project_ ini merupakan versi 2.0, silahkan cek ke riwayat _commit_ untuk melihat _project_ versi sebelumnya.
+_Project_ ini merupakan versi **2.0**, silahkan cek ke riwayat _commit_ untuk melihat _project_ versi sebelumnya.
 
-Yang baru di versi 2 :
+Yang baru di versi **2.0** :
 
 -   Fitur login
 -   Tampilan lebih simpel
 -   _Darkmode_
 -   _Sidebar_
 -   Tampilan _popup_ yang lebih baik
+
+Akun yang dapat digunakan untuk login :
+
+1.  **Sandhika Galih**
+
+    -   Username : Sandhika Galih
+    -   Password : wpunpas2020
+
+2.  **Azril ardian**
+    -   Username : Azril ardian
+    -   Password : 12345678
 
 ## Screenshot ( Versi 2 )
 
